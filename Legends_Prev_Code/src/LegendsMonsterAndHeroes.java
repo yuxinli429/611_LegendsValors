@@ -43,7 +43,7 @@ public class LegendsMonsterAndHeroes extends RolePlayGame{
 				else
 					isValid = true;
 			}while((!isValid));
-			Market market = new Market(filereader);
+			HeroNexus market = new HeroNexus(filereader);
 			//once the heroparty move is valid and moved, check for the type of the cell
 			checkCell(scanner,lnmgameLayout, market, nextPosition);
 		}
@@ -90,10 +90,10 @@ public class LegendsMonsterAndHeroes extends RolePlayGame{
 			return 0;		
 	}
 	
-	public void checkCell(Scanner scanner,LNMGameLayout lnmgameLayout,Market market,int nextPosition) {
+	public void checkCell(Scanner scanner,LNMGameLayout lnmgameLayout,HeroNexus market,int nextPosition) {
 		List<Integer> gameCells = lnmgameLayout.getGameCells();
 		//if cell is market ask user if he would like to enter or continue game
-		if(gameCells.get(nextPosition-1)== CellType.MARKET.getCellTypeNumber()) {
+		if(gameCells.get(nextPosition-1)== CellType.HERONEXUS.getCellTypeNumber()) {
 			lnmgameLayout.setGameStartPosition(nextPosition);
 			System.out.println("You are in the market place!!");
 			lnmgameLayout.drawLNMLayout(true,false);
@@ -124,7 +124,7 @@ public class LegendsMonsterAndHeroes extends RolePlayGame{
 			checkCell(scanner,lnmgameLayout, market, nextPosition);			
 		}
 		//check for common place. All the game logic is inside class since monsters are not created at the beginning
-		else if(gameCells.get(nextPosition-1)== CellType.COMMONPLACE.getCellTypeNumber()) {
+		else if(gameCells.get(nextPosition-1)== CellType.PLAIN.getCellTypeNumber()) {
 			lnmgameLayout.setGameStartPosition(nextPosition);
 			CommonPlace cell = new CommonPlace(gameMonsters,gameHeroes);
 			cell.moveToCell(scanner,lnmgameLayout);
@@ -140,17 +140,10 @@ public class LegendsMonsterAndHeroes extends RolePlayGame{
         scanner.nextLine();
         this.GameConfig.setGameSize(GameConstants.LNM_LAYOUT_SIZE);
         FileToList readFile = new FileToList();//Parser created and used for all classes
-        LNMGameLayout lnmgameLayout = new LNMGameLayout(1,GameConfig);//Game layout created at the beginning of the game
-        ArrayList<ArrayList<String>> heroesList = new ArrayList<ArrayList<String>>();
-        heroesList = lnmgameLayout.displayHeroes(readFile);
-        GameDesigns.tableWithLines(heroesList, true);
-		for(int i=0;i<this.GameConfig.getTeamSize();i++){
-            int heroNumber = GameFunctions.safeScanIntWithLimit(scanner,"Please enter the number corresponding to the hero you would like to choose: ", 1,heroesList.size()-1);
-            scanner.nextLine();
-            Hero gameHero = new Hero();
-            gameHero.mapObject(heroesList.get(heroNumber));//mapper for hero class
-            gameHeroes.add(gameHero);
-		}
+        LNMGameLayout lnmgameLayout = new LNMGameLayout(GameConfig);//Game layout created at the beginning of the game
+        Heroes heroTeam = new Heroes(GameConfig);
+        heroTeam.readInputs(scanner, readFile);
+        gameHeroes = heroTeam.getSelectedHeroes();
 		//Creation of all the monsters from reading to mapping is taken care in Monsters class
 		Monsters monsters = new Monsters();
 		gameMonsters = monsters.createMonsterList(readFile);

@@ -1,4 +1,4 @@
-//Market inventory used to maintain the inventory of all the objects available for buy/sell
+//HeroNexus inventory used to maintain the inventory of all the objects available for buy/sell
 
 public abstract class MarketInventory implements isBuySellable{
 	private String name;

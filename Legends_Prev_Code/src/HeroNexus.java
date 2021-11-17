@@ -1,8 +1,8 @@
 import java.util.List;
 import java.util.Scanner;
 
-//Market class has inventory
-public class Market extends Cell{
+//HeroNexus class has inventory
+public class HeroNexus extends NexusCell{
 	
 	private List<Potion> potions;
 	private List<Spell> spells;
@@ -14,7 +14,7 @@ public class Market extends Cell{
 	private Armors armorsClass;
 	
 	//used for game logic and builder patterns is implemented here
-	public Market(FileToList filereader) {
+	public HeroNexus(FileToList filereader) {
 		this.potionsclass = new Potions(filereader);
 		this.potions = potionsclass.createPotionsList();
 		this.spellsClass = new Spells(filereader);
@@ -26,7 +26,7 @@ public class Market extends Cell{
 	}
 	
 	//empty constructor used to display market designs on console
-	public Market() {
+	public HeroNexus() {
 		
 	}
 
@@ -90,7 +90,7 @@ public class Market extends Cell{
 		for(int i=0; i<heroList.size();i++) {
 			boolean isDone = false;
 			while(!isDone) {
-				int inventoryTypeOption = GameFunctions.safeScanIntWithLimit(scanner,heroList.get(i).getName()+", Please enter the number you would like to buy/perform at the maket:\n1.Potions\n2.Spell\n3.Weapons\n4.Armor\n5.Exit Market\n6.Choose for Next Hero\nInput: ", 1,6);
+				int inventoryTypeOption = GameFunctions.safeScanIntWithLimit(scanner,heroList.get(i).getName()+", Please enter the number you would like to buy/perform at the maket:\n1.Potions\n2.Spell\n3.Weapons\n4.Armor\n5.Exit HeroNexus\n6.Choose for Next Hero\nInput: ", 1,6);
 				scanner.nextLine();	
 				if(inventoryTypeOption==1)
 					sellPotion(scanner,heroList.get(i));

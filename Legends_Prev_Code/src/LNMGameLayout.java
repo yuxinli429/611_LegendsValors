@@ -7,28 +7,43 @@ import java.util.Random;
 //Class to build and display the game 
 public class LNMGameLayout extends GameLayout{
 	
-	private int[] gameCellsType1;
+	//private int[] gameCellsType1;
 	private List<Integer> gameCellsType;
 	
-	//create the map in this constructor to mske it immutable
-	public LNMGameLayout(int position, GameConfig gameConfig) {
-		super(position, gameConfig.getGameSize());
+	//create the map in this constructor to make it immutable
+	public LNMGameLayout(GameConfig gameConfig) {
+		super(gameConfig.getGameSize());
 		gameCellsType = new ArrayList<Integer>();
-		int inacceCells = (int) (Math.round(this.getGameSize()*this.getGameSize())*0.2);
-		int marketCells = (int) (Math.round(this.getGameSize()*this.getGameSize())*0.3);
-		for(int i=0;i<inacceCells;i++) {
-			gameCellsType.add(i, CellType.INACCESSIBLECELL.getCellTypeNumber());
+		int plainCells = (int) (Math.round(this.getGameSize()*this.getGameSize())*0.4);
+		int bushCells = (int) (Math.round(this.getGameSize()*this.getGameSize())*0.2);
+		int caveCells = (int) (Math.round(this.getGameSize()*this.getGameSize())*0.2);
+
+		
+		for(int i=0;i<plainCells;i++) {
+			gameCellsType.add(i, CellType.PLAIN.getCellTypeNumber());
 		}
 		
-		for(int i=inacceCells;i<(inacceCells+marketCells);i++) {
-			gameCellsType.add(i, CellType.MARKET.getCellTypeNumber());
+		for(int i=plainCells;i<(plainCells+bushCells);i++) {
+			gameCellsType.add(i, CellType.BUSH.getCellTypeNumber());
 		}
-		for(int i=(inacceCells+marketCells);i<this.getGameSize()*this.getGameSize();i++) {
-			gameCellsType.add(i, CellType.COMMONPLACE.getCellTypeNumber());
+		for(int i=(plainCells+bushCells);i<(plainCells+bushCells+caveCells);i++) {
+			gameCellsType.add(i, CellType.CAVE.getCellTypeNumber());
+		}
+		
+		for(int i=(plainCells+bushCells+caveCells);i<(this.getGameSize()*this.getGameSize());i++) {
+			gameCellsType.add(i, CellType.KOULOU.getCellTypeNumber());
 		}
 		Collections.shuffle(gameCellsType);		
-		gameCellsType.set(0, CellType.COMMONPLACE.getCellTypeNumber());
-		gameCellsType.set(1, CellType.MARKET.getCellTypeNumber());
+		for(int i=0;i<this.getGameSize();i++) {
+			gameCellsType.set(i, CellType.MONSTERNEXUS.getCellTypeNumber());
+		}
+		for(int i=(this.getGameSize()*this.getGameSize())-this.getGameSize();i<this.getGameSize()*this.getGameSize();i++) {
+			gameCellsType.set(i, CellType.HERONEXUS.getCellTypeNumber());
+		}
+		for(int i=2;i<this.getGameSize()*this.getGameSize();i=i+this.getGameSize()) {
+			gameCellsType.set(i, CellType.INACCESSIBLECELL.getCellTypeNumber());
+			gameCellsType.set(i+3, CellType.INACCESSIBLECELL.getCellTypeNumber());
+		}
 	}
 	
 	public List<Integer> getGameCells() {
@@ -38,100 +53,82 @@ public class LNMGameLayout extends GameLayout{
 	
 	public void drawLNMLayout(boolean isMarket, boolean isInventory) {
 		drawMap();
-		displayMapInfo();
+		//displayMapInfo();
 		System.out.println("Below are the controls you could use to navigate");
 		displayControlPanel(isMarket,isInventory);	
 	}
 	
-	//Hero list is build and diaplyed since no storing is required for all the heroes
-	public ArrayList<ArrayList<String>> displayHeroes(FileToList readFile) {
-		ArrayList<ArrayList<String>> paladinsList = new ArrayList<ArrayList<String>>();
-		paladinsList = readFile.readFile("Paladins.txt");
-		paladinsList.get(0).add("Hero Type");
-		for(int i=1; i<paladinsList.size();i++) {
-			paladinsList.get(i).add("Paladin");
-		}
-		ArrayList<ArrayList<String>> sorcerersList = new ArrayList<ArrayList<String>>();
-		sorcerersList = readFile.readFile("Sorcerers.txt");
-		sorcerersList.remove(0);
-		for(int i=0; i<sorcerersList.size();i++) {
-			sorcerersList.get(i).add("Sorcerer");
-		}
-		ArrayList<ArrayList<String>> warriorsList = new ArrayList<ArrayList<String>>();
-		warriorsList = readFile.readFile("Warriors.txt");
-		warriorsList.remove(0);
-		for(int i=0; i<warriorsList.size();i++) {
-			warriorsList.get(i).add("Warrior");
-		}
-		ArrayList<ArrayList<String>> heroesList = new ArrayList<ArrayList<String>>();
-		heroesList.addAll(paladinsList);
-		heroesList.addAll(sorcerersList);
-		heroesList.addAll(warriorsList);
-		return heroesList;
-	}
 	
 	//method to create the LNM game maze showing market, inaccessible and common place cells
 	public void drawMap() {
 		// TODO Auto-generated method stub
 		//Create cells using Cell class with number for ease of user
-		int cellWidth = 6;
-		for(int z=0;z<this.getGameSize();z++){
-			for(int i=1;i<=cellWidth*this.getGameSize();i++)
-        	{
-				System.out.print("-");
-        	}
+		int cellNum1=0,cellNum2=0,cellNum3 =0;
+		for(int i=0; i<this.getGameSize();i++) {
+			for(int j=0; j<this.getGameSize();j++) {
+				cellTop(gameCellsType.get(cellNum1));
+				cellNum1++;
+			}
 			System.out.println();
-			for(int i=1;i<=this.getGameSize();i++)
-        	{
-				int cellNumber = GameFunctions.ij_to_int(z, i, this.getGameSize())-1;
-				if(cellNumber == this.getGameStartPosition()-1) {
-					Hero hero = new Hero();
-					hero.heroPartyDesignTop();
-				}
-				else if(gameCellsType.get(cellNumber)== CellType.MARKET.getCellTypeNumber()){					
-					Market cell = new Market();
-					cell.marketDesignTop();
-				}
-				else if(gameCellsType.get(cellNumber) == CellType.INACCESSIBLECELL.getCellTypeNumber()){
-					InaccessibleCell cell = new InaccessibleCell();
-					cell.inaccessibleDesignTop();
-				}
+			for(int j=0; j<this.getGameSize();j++) {
+				if(gameCellsType.get(cellNum2)!=3)
+					cellMid(String.valueOf(cellNum2+1),false);
 				else {
-					CommonPlace cell = new CommonPlace();
-					cell.commonPlaceDesignTop();
+					cellMid(String.valueOf(cellNum2+1),true);
 				}
-				
-        	}
+				cellNum2++;
+			}
 			System.out.println();
-			for(int i=1;i<=this.getGameSize();i++)
-        	{
-				int cellNumber = GameFunctions.ij_to_int(z, i, this.getGameSize())-1;
-				if(cellNumber == this.getGameStartPosition()-1) {
-					Hero hero = new Hero();
-					hero.heroPartyDesignBottom();
-				}
-				else if(gameCellsType.get(cellNumber) == CellType.MARKET.getCellTypeNumber()){					
-					Market cell = new Market();
-					cell.marketDesignBottom();
-				}
-				else if(gameCellsType.get(cellNumber) == CellType.INACCESSIBLECELL.getCellTypeNumber()){
-					InaccessibleCell cell = new InaccessibleCell();
-					cell.inaccessibleDesignBottom();
-				}
-				else {
-					CommonPlace cell = new CommonPlace();
-					cell.commonPlaceDesignBottom();
-				}
-        	}
+			for(int j=0; j<this.getGameSize();j++) {
+				cellTop(gameCellsType.get(cellNum3));
+				cellNum3++;
+			}
 			System.out.println();
-			
-		}
-		for(int i=1;i<=cellWidth*this.getGameSize();i++)
-    	{
-			System.out.print("-");
-    	}
-    System.out.println();	
+			System.out.println();
+		}		
 	}
+	
+	public void cellTop(int cellTypeNumber) {
+		switch(cellTypeNumber) {
+			case 1:
+				System.out.print(CellType.HERONEXUS.getCellTypeDesign()+" - "+CellType.HERONEXUS.getCellTypeDesign()+" - "+CellType.HERONEXUS.getCellTypeDesign()+"  ");
+				break;
+			case 2:
+				System.out.print(CellType.MONSTERNEXUS.getCellTypeDesign()+" - "+CellType.MONSTERNEXUS.getCellTypeDesign()+" - "+CellType.MONSTERNEXUS.getCellTypeDesign()+"  ");
+				break;
+			case 3:
+				System.out.print(CellType.INACCESSIBLECELL.getCellTypeDesign()+" - "+CellType.INACCESSIBLECELL.getCellTypeDesign()+" - "+CellType.INACCESSIBLECELL.getCellTypeDesign()+"  ");
+				break;
+			case 4:
+				System.out.print(CellType.PLAIN.getCellTypeDesign()+" - "+CellType.PLAIN.getCellTypeDesign()+" - "+CellType.PLAIN.getCellTypeDesign()+"  ");
+				break;
+			case 5:
+				System.out.print(CellType.BUSH.getCellTypeDesign()+" - "+CellType.BUSH.getCellTypeDesign()+" - "+CellType.BUSH.getCellTypeDesign()+"  ");
+				break;
+			case 6:
+				System.out.print(CellType.CAVE.getCellTypeDesign()+" - "+CellType.CAVE.getCellTypeDesign()+" - "+CellType.CAVE.getCellTypeDesign()+"  ");
+				break;
+			case 7:
+				System.out.print(CellType.KOULOU.getCellTypeDesign()+" - "+CellType.KOULOU.getCellTypeDesign()+" - "+CellType.KOULOU.getCellTypeDesign()+"  ");
+				break;
+		}
+		
+	}
+	
+	public void cellMid(String cellvalue, boolean isInaccessibleCell) {
+		if(isInaccessibleCell)
+			System.out.print("| "+"X X X"+" |  ");
+		else {
+			System.out.print("|  "+cellvalue);
+			int currLength = ("  "+cellvalue).length();
+			while(currLength<7) {
+				System.out.print(" ");
+				currLength++;
+			}
+			System.out.print("|  ");
+		}
+		
+	} 
 	
 	//display controls info based on the cell position
 	public void displayControlPanel(boolean ismarket, boolean isInventory) {
@@ -156,9 +153,9 @@ public class LNMGameLayout extends GameLayout{
 	
 	//display the map info to understand the cells
 	public void displayMapInfo() {
-		Market market = new Market();
+		HeroNexus market = new HeroNexus();
 		market.cellDesign();
-		System.out.println(" - Market");
+		System.out.println(" - HeroNexus");
 		System.out.println();
 		InaccessibleCell cell = new InaccessibleCell();
 		cell.cellDesign();

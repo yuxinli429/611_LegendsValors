@@ -44,7 +44,7 @@ public class Monster extends GameCharacter{
 		this.dodgeChance = dodgeChance;
 	}
 	
-	//mapper function for the monster class
+	//mapper function for the Dragon class
 	public void mapObject(ArrayList<String> monsterList, MonsterType monsterType) {
 		this.setName(monsterList.get(0));
 		this.setGameLevel(Integer.parseInt(monsterList.get(1)));
@@ -53,7 +53,7 @@ public class Monster extends GameCharacter{
 		this.setDodgeChance(Integer.parseInt(monsterList.get(4)));
 		this.setMonsterType(monsterType);
 		this.setHealthPower(Integer.parseInt(monsterList.get(1))*100);
-	}
+	}		
 	
 	//function to facilitate monsters attack
 	public void attack(Hero hero) {

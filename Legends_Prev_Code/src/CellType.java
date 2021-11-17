@@ -2,24 +2,30 @@
 
 public enum CellType {
 	
-	MARKET("Market",1),
-	INACCESSIBLECELL("InaccesssibleCell",2),
-	COMMONPLACE("CommonPlace",3);
+	//MARKET("HeroNexus",1),
+	HERONEXUS("N",1),
+	MONSTERNEXUS("N",2),
+	INACCESSIBLECELL("I",3),
+	//COMMONPLACE("CommonPlace",4),
+	PLAIN("P",4),
+	BUSH("B",5),
+	CAVE("C",6),
+	KOULOU("K",7);
 	
-	private String cellTypeClass;
+	private String cellTypeDesign;
 	private int cellTypeNumber;
 	
-	CellType(String cellTypeClass, int cellTypeNumber) {
-		this.setCellTypeClass(cellTypeClass);
+	CellType(String cellTypeDesign, int cellTypeNumber) {
+		this.setCellTypeDesign(cellTypeDesign);
 		this.setCellTypeNumber(cellTypeNumber);
 	}
 
-	public String getCellTypeClass() {
-		return cellTypeClass;
+	public String getCellTypeDesign() {
+		return cellTypeDesign;
 	}
 
-	public void setCellTypeClass(String cellTypeClass) {
-		this.cellTypeClass = cellTypeClass;
+	public void setCellTypeDesign(String cellTypeDesign) {
+		this.cellTypeDesign = cellTypeDesign;
 	}
 
 	public int getCellTypeNumber() {

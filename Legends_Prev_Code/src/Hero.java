@@ -96,7 +96,7 @@ public class Hero extends GameCharacter{
 	}
 	
 	//mapper to create Hero object rather than using new
-	public void mapObject(List<String> heroList) {
+	public void mapObject(List<String> heroList, HeroType heroType, String heroSymbol) {
 		this.setGameLevel(1);
 		this.setName(heroList.get(0));
 		this.setMana(Double.parseDouble(heroList.get(1)));
@@ -105,12 +105,8 @@ public class Hero extends GameCharacter{
 		this.setDexterity(Integer.parseInt(heroList.get(4)));
 		this.setMoney(Float.parseFloat(heroList.get(5)));
 		this.setExperince(Float.parseFloat(heroList.get(6)));
-		if(heroList.get(7) == "Paladin")
-			this.setHeroType(HeroType.PALADINS);
-		else if(heroList.get(7) == "Sorcerer")
-			this.setHeroType(HeroType.SORCERERS);
-		else
-			this.setHeroType(HeroType.WARRIORS);		
+		this.setHeroType(heroType);	
+		this.setCharacterSymbol(heroSymbol);
 	}
 
 
@@ -122,7 +118,7 @@ public class Hero extends GameCharacter{
 	public void sellHeroInventory(Scanner scanner) {
 		boolean isDone = false;
 		while(!isDone) {
-			int inventoryTypeOption = GameFunctions.safeScanIntWithLimit(scanner,this.getName()+", Please enter the number you would like to sell/perform at the maket:\n1.Potions\n2.Spell\n3.Weapons\n4.Armor\n5.Exit Market\nInput: ", 1,5);
+			int inventoryTypeOption = GameFunctions.safeScanIntWithLimit(scanner,this.getName()+", Please enter the number you would like to sell/perform at the maket:\n1.Potions\n2.Spell\n3.Weapons\n4.Armor\n5.Exit HeroNexus\nInput: ", 1,5);
 			scanner.nextLine();	
 			if(inventoryTypeOption==1)
 				sellPotion(scanner);
