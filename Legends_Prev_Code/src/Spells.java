@@ -25,18 +25,18 @@ public class Spells {
 	public List<Spell> createSpellsList(){
 		spellsList = new ArrayList<>();
 		for(int i =1; i<icespellList.size();i++) {
-			Spell iceSpell = new Spell();
-			iceSpell.mapObject(icespellList.get(i), SpellTypes.ICESPELL);
+			IceSpell iceSpell = new IceSpell();
+			iceSpell.mapObject(icespellList.get(i));
 			spellsList.add(iceSpell);
 		}
 		for(int i =1; i<fireSpellsList.size();i++) {
-			Spell fireSpell = new Spell();
-			fireSpell.mapObject(fireSpellsList.get(i), SpellTypes.FIRESPELL);
+			FireSpell fireSpell = new FireSpell();
+			fireSpell.mapObject(fireSpellsList.get(i));
 			spellsList.add(fireSpell);
 		}
 		for(int i =1; i<lightningSpellsList.size();i++) {
-			Spell lightningSpell = new Spell();
-			lightningSpell.mapObject(lightningSpellsList.get(i), SpellTypes.LIGHTNINGSPELL);
+			LightningSpell lightningSpell = new LightningSpell();
+			lightningSpell.mapObject(lightningSpellsList.get(i));
 			spellsList.add(lightningSpell);
 		}			
 		return spellsList;		

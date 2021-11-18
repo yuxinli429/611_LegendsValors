@@ -45,7 +45,7 @@ public class Monster extends GameCharacter{
 	}
 	
 	//mapper function for the Dragon class
-	public void mapObject(ArrayList<String> monsterList, MonsterType monsterType) {
+	public void mapObject(ArrayList<String> monsterList) {
 		this.setName(monsterList.get(0));
 		this.setGameLevel(Integer.parseInt(monsterList.get(1)));
 		this.setDamage(Integer.parseInt(monsterList.get(2)));
