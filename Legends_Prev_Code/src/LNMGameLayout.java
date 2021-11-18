@@ -137,15 +137,17 @@ public class LNMGameLayout extends GameLayout{
 		controls.add(0,controlList2);
 		ArrayList<String> controlList3 = new ArrayList<>(Arrays.asList("a: move left", "d: move right"));
 		controls.add(1,controlList3);
-		ArrayList<String> controlList4 = new ArrayList<>(Arrays.asList("q: quit game", "i: show hero info"));
+		ArrayList<String> controlList4 = new ArrayList<>(Arrays.asList("t: teleport", "b: back"));
 		controls.add(2,controlList4);
-		ArrayList<String> controlList5 = new ArrayList<>(Arrays.asList("m: Enter market", "h: Show Inventory"));
+		ArrayList<String> controlList5 = new ArrayList<>(Arrays.asList("q: quit game", "i: show hero info"));
 		controls.add(3,controlList5);
+		ArrayList<String> controlList6 = new ArrayList<>(Arrays.asList("m: Enter market", "h: Show Inventory"));
+		controls.add(4,controlList6);
 		if(ismarket) {
-			controls.get(3).set(1, " ");
+			controls.get(4).set(1, " ");
 		}
 		else if(isInventory) {
-			controls.get(3).set(0, " ");
+			controls.get(4).set(0, " ");
 		}
 
 		GameDesigns.tableWithLines(controls, false);	

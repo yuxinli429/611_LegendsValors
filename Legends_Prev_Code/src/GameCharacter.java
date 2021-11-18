@@ -15,7 +15,7 @@ public class GameCharacter {
 		Name = name;
 	}
 	public int getGameLevel() {
-		return gameLevel;
+	 	return gameLevel;
 	}
 
 	public void setGameLevel(int gameLevel) {

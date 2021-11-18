@@ -19,6 +19,8 @@ public class GameConstants {
     public static final String LNM_QUIT_KEY = "q";
     public static final String LNM_MARKET_KEY = "m";
     public static final String LNM_INVENTORY_KEY = "h";
+    public static final String LNM_TELEPORT_KEY = "t";
+    public static final String LNM_BACK_KEY = "b";
     public static final String ANSI_RED = "\u001B[31m";
     public static final String ANSI_GREEN = "\u001B[32m";
     public static final String ANSI_YELLOW = "\u001B[33m";

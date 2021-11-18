@@ -32,20 +32,23 @@ public class LegendsMonsterAndHeroes extends RolePlayGame{
 		//play till the game is end or ended by user
 		while(true) {
 			lnmgameLayout.drawLNMLayout(false,true);
-			boolean isValid = false;
-			int nextPosition = 0;
-			do {
-				//check for the input from user to move around the board
-				String input = GameFunctions.safeScanChar(scanner, "Please enter the input: ");
-				nextPosition = moveHeroParty(lnmgameLayout,input,scanner);
-				if(nextPosition == 0)
-					System.out.println("Invalid move");
-				else
-					isValid = true;
-			}while((!isValid));
-			HeroNexus market = new HeroNexus(filereader);
-			//once the heroparty move is valid and moved, check for the type of the cell
-			checkCell(scanner,lnmgameLayout, market, nextPosition);
+			for(Hero one_hero : gameHeroes) {
+				boolean isValid = false;
+				int nextPosition = 0;
+				do {
+					System.out.println("Hero: " + one_hero.getName());
+					//check for the input from user to move around the board
+					String input = GameFunctions.safeScanChar(scanner, "Please enter the input: ");
+					nextPosition = moveHeroParty(lnmgameLayout, input, scanner);
+					if (nextPosition == 0)
+						System.out.println("Invalid move");
+					else
+						isValid = true;
+				} while ((!isValid));
+				HeroNexus market = new HeroNexus(filereader);
+				//once the heroparty move is valid and moved, check for the type of the cell
+				checkCell(scanner, lnmgameLayout, market, nextPosition);
+			}
 		}
 			
 	}
@@ -64,6 +67,9 @@ public class LegendsMonsterAndHeroes extends RolePlayGame{
 			nextPostn = currentPosition+1;
 		}
 		else if(GameConstants.LNM_LEFT_KEY.equalsIgnoreCase(nextPosition)) {
+			nextPostn = currentPosition-1;
+		}
+		else if(GameConstants.LNM_TELEPORT_KEY.equalsIgnoreCase(nextPosition)) {
 			nextPostn = currentPosition-1;
 		}
 		else if(GameConstants.LNM_MARKET_KEY.equalsIgnoreCase(nextPosition)) {

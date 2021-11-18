@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
+import java.lang.Math;
 
 //Hero class has attributes of all heroes and HeroType and child class of GameCharacter class and contains mapper function to create object
 
@@ -205,6 +206,21 @@ public class Hero extends GameCharacter{
 				this.getHeroInventory().getArmorsList().remove(inventoryTypeOption-1);
 			}	
 		}	
+	}
+
+	public int teleport(LNMGameLayout map, Scanner scanner) {
+		String tele_msg = "Please enter the number inside a cell to select a destination of teleporting ";
+		while(true) {
+			int tele_des = GameFunctions.safeScanIntWithLimit(scanner, tele_msg, 1,
+					map.getGameSize() * map.getGameSize());
+			int mod_des = tele_des % map.getGameSize();
+			int mod_cur = heroLocation % map.getGameSize();
+			if(map.getGameCells().get(tele_des - 1) != CellType.INACCESSIBLECELL.getCellTypeNumber()) {
+				System.out.println("Cannot teleport to an inaccessible cell.");
+			} else if(Math.abs(mod_des - mod_cur) < 2) {
+				System.out.println("Cannot teleport to a cell in the same lane.");
+			}
+		}
 	}
 	
 	//function called when hero fights with monster applicable for one-one
