@@ -22,17 +22,17 @@ public class Heroes {
             scanner.nextLine();
             if(heroesList.get(heroNumber).get(7) == "Paladin") {
             	Paladin gameHero = new Paladin();
-            	gameHero.mapObject(heroesList.get(heroNumber),HeroType.PALADINS,heroSymbol);//mapper for hero class
+            	gameHero.mapObject(heroesList.get(heroNumber),heroSymbol);//mapper for hero class
                 selectedHeroes.add(gameHero); 
             }
     		else if(heroesList.get(heroNumber).get(7) == "Sorcerer") {
     			Sorcerer gameHero = new Sorcerer();
-    			gameHero.mapObject(heroesList.get(heroNumber),HeroType.SORCERERS,heroSymbol);//mapper for hero class
+    			gameHero.mapObject(heroesList.get(heroNumber),heroSymbol);//mapper for hero class
                 selectedHeroes.add(gameHero); 
     		}
     		else {
     			Warrior gameHero = new Warrior();
-    			gameHero.mapObject(heroesList.get(heroNumber),HeroType.WARRIORS,heroSymbol);//mapper for hero class
+    			gameHero.mapObject(heroesList.get(heroNumber),heroSymbol);//mapper for hero class
                 selectedHeroes.add(gameHero); 
     		}
 		}

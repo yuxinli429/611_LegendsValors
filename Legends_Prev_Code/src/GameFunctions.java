@@ -163,12 +163,10 @@ public class GameFunctions {
                 invalidInput = false;
                 if(retValue.length() != 1) {
                 	System.out.println("Invalid input. Please try again.....");
-                    scanner.next();
                     invalidInput = true;
                 }
             }catch (Exception e) {
                 System.out.println("Invalid input. Please try again.....");
-                scanner.next();
                 invalidInput = true;
             }
         }while (invalidInput);

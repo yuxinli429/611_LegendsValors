@@ -16,7 +16,7 @@ public class Monsters {
 		dragonsList = readFile.readFile("Dragons.txt");
 		for(int i =1; i<dragonsList.size();i++) {
 			Dragon dragonMonster = new Dragon();
-			dragonMonster.mapObject(dragonsList.get(i), MonsterType.DRAGONS);
+			dragonMonster.mapObject(dragonsList.get(i));
 			monstersList.add(dragonMonster);
 		}
 		ArrayList<ArrayList<String>> exoskeletonsList = new ArrayList<ArrayList<String>>();
@@ -25,14 +25,14 @@ public class Monsters {
 		//System.out.println(exoskeletonsList.get(3).get(0)+" "+exoskeletonsList.get(2).get(1));
 		for(int i =1; i<exoskeletonsList.size();i++) {
 			Exoskeleton exoskeletonMonster = new Exoskeleton();
-			exoskeletonMonster.mapObject(exoskeletonsList.get(i), MonsterType.EXOSKELETONS);
+			exoskeletonMonster.mapObject(exoskeletonsList.get(i));
 			monstersList.add(exoskeletonMonster);
 		}
 		ArrayList<ArrayList<String>> spiritsList = new ArrayList<ArrayList<String>>();
 		spiritsList = readFile.readFile("Spirits.txt");
 		for(int i =1; i<spiritsList.size();i++) {
 			Spirit spiritMonster = new Spirit();
-			spiritMonster.mapObject(spiritsList.get(i), MonsterType.SPIRITS);
+			spiritMonster.mapObject(spiritsList.get(i));
 			monstersList.add(spiritMonster);
 		}			
 		return monstersList;		

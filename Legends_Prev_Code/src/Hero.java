@@ -96,7 +96,7 @@ public class Hero extends GameCharacter{
 	}
 	
 	//mapper to create Hero object rather than using new
-	public void mapObject(List<String> heroList, HeroType heroType, String heroSymbol) {
+	public void mapObject(List<String> heroList, String heroSymbol) {
 		this.setGameLevel(1);
 		this.setName(heroList.get(0));
 		this.setMana(Double.parseDouble(heroList.get(1)));
@@ -106,7 +106,7 @@ public class Hero extends GameCharacter{
 		this.setMoney(Float.parseFloat(heroList.get(5)));
 		this.setExperince(Float.parseFloat(heroList.get(6)));
 		this.setHeroType(heroType);	
-		this.setCharacterSymbol(heroSymbol);
+		//this.setCharacterSymbol(heroSymbol);
 	}
 
 

@@ -63,7 +63,7 @@ public class Spell extends MarketInventory implements isCastable{
 		this.spellType = spellType;
 	}
 
-	public void mapObject(ArrayList<String> spellList, SpellTypes spellType) {
+	public void mapObject(ArrayList<String> spellList) {
 		// TODO Auto-generated method stub
 		this.setName(spellList.get(0));
 		this.setCost(Float.parseFloat(spellList.get(1)));
