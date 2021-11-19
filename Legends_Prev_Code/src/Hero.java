@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -5,6 +6,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 import java.lang.Math;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 //Hero class has attributes of all heroes and HeroType and child class of GameCharacter class and contains mapper function to create object
 
@@ -208,17 +211,56 @@ public class Hero extends GameCharacter{
 		}	
 	}
 
-	public int teleport(LNMGameLayout map, Scanner scanner) {
-		String tele_msg = "Please enter the number inside a cell to select a destination of teleporting ";
+	public int teleport(LNMGameLayout map, Scanner scanner, List<Monster> mst, List<Hero> hero) {
+		Pattern int_pattern = Pattern.compile("^\\s*(\\d+)\\s*");
+		Pattern quit_pattern = Pattern.compile("^\\s*(q)\\s*");
+		int farthest_hero = map.getGameSize() * map.getGameSize();
+		for(Hero h : hero) {
+			farthest_hero = Math.min(farthest_hero, h.getHeroLocation());
+		}
 		while(true) {
-			int tele_des = GameFunctions.safeScanIntWithLimit(scanner, tele_msg, 1,
-					map.getGameSize() * map.getGameSize());
-			int mod_des = tele_des % map.getGameSize();
-			int mod_cur = heroLocation % map.getGameSize();
-			if(map.getGameCells().get(tele_des - 1) != CellType.INACCESSIBLECELL.getCellTypeNumber()) {
-				System.out.println("Cannot teleport to an inaccessible cell.");
-			} else if(Math.abs(mod_des - mod_cur) < 2) {
-				System.out.println("Cannot teleport to a cell in the same lane.");
+			System.out.println("Please enter the number inside a cell to select a destination of teleporting ");
+			boolean inp_valid = false;
+			String inp = "";
+			int inp_int = 0;
+			while(!inp_valid) {
+				inp = scanner.nextLine();
+				Matcher match_q = quit_pattern.matcher(inp);
+				Matcher match_int = int_pattern.matcher(inp);
+				if (!match_q.find() && !match_int.find()) {
+					System.out.println("Invalid input. Please enter again!");
+				} else if(match_q.find()){
+					return heroLocation;
+				} else {
+					inp_int = Integer.parseInt(match_int.group(1));
+					inp_valid = true;
+				}
+			}
+			if(inp_int < 1 || inp_int > (map.getGameSize() * map.getGameSize())) {
+				System.out.println("Number out of range. Please enter again!");
+			} else {
+				int tele_des = inp_int;
+				int farthest_mst = 0;
+				int mod_des = tele_des % map.getGameSize();
+				int mod_cur = heroLocation % map.getGameSize();
+				for(Monster m : mst) {
+					if(Math.abs((m.getPosition() % map.getGameSize()) - mod_des) < 2) {
+						farthest_mst = Math.max(farthest_mst, m.getPosition());
+					}
+				}
+				if(map.getGameCells().get(tele_des - 1) != CellType.INACCESSIBLECELL.getCellTypeNumber()) {
+					System.out.println("Cannot teleport to an inaccessible cell.");
+				} else if(Math.abs(mod_des - mod_cur) < 2) {
+					System.out.println("Cannot teleport to a cell in the same lane.");
+				} else if(hero.contains(tele_des)) {
+					System.out.println("Cannot teleport to a cell with hero.");
+				} else if((tele_des / map.getGameSize()) < (farthest_hero / map.getGameSize())) {
+					System.out.println("Cannot teleport to areas which have not been explored.");
+				} else if((tele_des / map.getGameSize()) < (farthest_mst / map.getGameSize())) {
+					System.out.println("Cannot teleport to a cell behind monsters in that lane.");
+				} else {
+					return tele_des;
+				}
 			}
 		}
 	}
