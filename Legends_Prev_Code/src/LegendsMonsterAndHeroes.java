@@ -31,7 +31,7 @@ public class LegendsMonsterAndHeroes extends RolePlayGame{
 		System.out.println("Welcome to the village!!");
 		//play till the game is end or ended by user
 		while(true) {
-			lnmgameLayout.drawLNMLayout(false,true);
+			lnmgameLayout.drawLNMLayout(false,true,gameHeroes,gameMonsters);
 			for(Hero one_hero : gameHeroes) {
 				boolean isValid = false;
 				int nextPosition = 0;
@@ -102,7 +102,7 @@ public class LegendsMonsterAndHeroes extends RolePlayGame{
 		if(gameCells.get(nextPosition-1)== CellType.HERONEXUS.getCellTypeNumber()) {
 			lnmgameLayout.setGameStartPosition(nextPosition);
 			System.out.println("You are in the market place!!");
-			lnmgameLayout.drawLNMLayout(true,false);
+			lnmgameLayout.drawLNMLayout(true,false,gameHeroes,gameMonsters);
 			String input = GameFunctions.safeScanChar(scanner, "Please enter the input: ");
 			nextPosition = moveHeroParty(lnmgameLayout,input,scanner);
 			if(nextPosition == -20) {
@@ -124,7 +124,7 @@ public class LegendsMonsterAndHeroes extends RolePlayGame{
 		else if(gameCells.get(nextPosition-1)== CellType.INACCESSIBLECELL.getCellTypeNumber()) {
 			InaccessibleCell cell = new InaccessibleCell();
 			cell.moveToCell(scanner,lnmgameLayout);
-			lnmgameLayout.drawLNMLayout(false,true);
+			lnmgameLayout.drawLNMLayout(false,true,gameHeroes,gameMonsters);
 			String input = GameFunctions.safeScanChar(scanner, "Please enter the input: ");
 			nextPosition = moveHeroParty(lnmgameLayout,input,scanner);
 			checkCell(scanner,lnmgameLayout, market, nextPosition);			
@@ -142,8 +142,7 @@ public class LegendsMonsterAndHeroes extends RolePlayGame{
 	public LNMGameLayout initializegame(Scanner scanner) {
 		gameHeroes = new ArrayList<>();
 		gameMonsters = new ArrayList<>();
-		this.GameConfig.setTeamSize(GameFunctions.safeScanIntWithLimit(scanner,"Please enter the number of heroes you would like to play with: ", GameConstants.LNM_TEAM_COUNT_MIN,GameConstants.LNM_TEAM_COUNT_MAX));
-        scanner.nextLine();
+		this.GameConfig.setTeamSize(GameConstants.LNM_PLAYER_COUNT_MAX);
         this.GameConfig.setGameSize(GameConstants.LNM_LAYOUT_SIZE);
         FileToList readFile = new FileToList();//Parser created and used for all classes
         LNMGameLayout lnmgameLayout = new LNMGameLayout(GameConfig);//Game layout created at the beginning of the game

@@ -40,7 +40,7 @@ public class HeroNexus extends NexusCell{
 	}
 	
 	public void marketDesignTop() {		
-		System.out.print(GameConstants.ANSI_GREEN+"|/''\\|"+GameConstants.RESET_COLOR);
+		System.out.print(GameConstants.ANSI_GREEN+CellType.HERONEXUS.getCellTypeDesign()+" - "+CellType.HERONEXUS.getCellTypeDesign()+" - "+CellType.HERONEXUS.getCellTypeDesign()+"  "+GameConstants.RESET_COLOR);
 			
 	}
 	public void marketDesignBottom() {	

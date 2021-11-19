@@ -9,6 +9,7 @@ public class LNMGameLayout extends GameLayout{
 	
 	//private int[] gameCellsType1;
 	private List<Integer> gameCellsType;
+	private List<Integer> heroNexus;
 	
 	//create the map in this constructor to make it immutable
 	public LNMGameLayout(GameConfig gameConfig) {
@@ -37,8 +38,10 @@ public class LNMGameLayout extends GameLayout{
 		for(int i=0;i<this.getGameSize();i++) {
 			gameCellsType.set(i, CellType.MONSTERNEXUS.getCellTypeNumber());
 		}
+		heroNexus = new ArrayList<Integer>();
 		for(int i=(this.getGameSize()*this.getGameSize())-this.getGameSize();i<this.getGameSize()*this.getGameSize();i++) {
 			gameCellsType.set(i, CellType.HERONEXUS.getCellTypeNumber());
+			heroNexus.add(i);
 		}
 		for(int i=2;i<this.getGameSize()*this.getGameSize();i=i+this.getGameSize()) {
 			gameCellsType.set(i, CellType.INACCESSIBLECELL.getCellTypeNumber());
@@ -50,9 +53,13 @@ public class LNMGameLayout extends GameLayout{
 		return gameCellsType;
 	}
 	
+	public List<Integer> heroNexusLoc() {
+		return heroNexus;
+	}
 	
-	public void drawLNMLayout(boolean isMarket, boolean isInventory) {
-		drawMap();
+	
+	public void drawLNMLayout(boolean isMarket, boolean isInventory,List<Hero> heroesList, List<Monster>  monsterList) {
+		drawMap(heroesList,monsterList);
 		//displayMapInfo();
 		System.out.println("Below are the controls you could use to navigate");
 		displayControlPanel(isMarket,isInventory);	
@@ -60,10 +67,18 @@ public class LNMGameLayout extends GameLayout{
 	
 	
 	//method to create the LNM game maze showing market, inaccessible and common place cells
-	public void drawMap() {
+	public void drawMap(List<Hero> heroesList, List<Monster>  monsterList) {
 		// TODO Auto-generated method stub
 		//Create cells using Cell class with number for ease of user
 		int cellNum1=0,cellNum2=0,cellNum3 =0;
+		List<Integer> herosLocation= new ArrayList<Integer>();
+		for(Hero hero:heroesList) {
+			herosLocation.add(hero.getCharacterPosition());			
+		}
+		List<Integer> monstersLocation= new ArrayList<Integer>();
+		for(Monster monster:monsterList) {
+			monstersLocation.add(monster.getCharacterPosition());			
+		}
 		for(int i=0; i<this.getGameSize();i++) {
 			for(int j=0; j<this.getGameSize();j++) {
 				cellTop(gameCellsType.get(cellNum1));
@@ -71,10 +86,23 @@ public class LNMGameLayout extends GameLayout{
 			}
 			System.out.println();
 			for(int j=0; j<this.getGameSize();j++) {
-				if(gameCellsType.get(cellNum2)!=3)
-					cellMid(String.valueOf(cellNum2+1),false);
-				else {
+				if(gameCellsType.get(cellNum2)==3)
 					cellMid(String.valueOf(cellNum2+1),true);
+				else {
+					if(herosLocation.contains(cellNum2+1) == true && monstersLocation.contains(cellNum2+1)== true) {
+						String value = heroesList.get(herosLocation.indexOf(cellNum2+1)).getCharacterSymbol().concat(monsterList.get(monstersLocation.indexOf(cellNum2+1)).getCharacterSymbol());
+						cellMid(value,false);
+					}
+					else if(herosLocation.contains(cellNum2+1) == true && monstersLocation.contains(cellNum2+1)== false){
+						String value = heroesList.get(herosLocation.indexOf(cellNum2+1)).getCharacterSymbol();						
+						cellMid(value,false);
+					}
+					else if(herosLocation.contains(cellNum2+1) == false && monstersLocation.contains(cellNum2+1)== true){
+						String value = monsterList.get(monstersLocation.indexOf(cellNum2+1)).getCharacterSymbol();						
+						cellMid(value,false);
+					}
+					else
+						cellMid(String.valueOf(cellNum2+1),true);
 				}
 				cellNum2++;
 			}
@@ -166,10 +194,6 @@ public class LNMGameLayout extends GameLayout{
 		CommonPlace place  = new CommonPlace();
 		place.cellDesign();
 		System.out.println(" - Common Place");
-		System.out.println();
-		Hero hero = new Hero();
-		hero.heroPartyDesign();
-		System.out.println(" - HeroParty");
 		System.out.println();
 	}
 	
