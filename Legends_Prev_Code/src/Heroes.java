@@ -16,6 +16,7 @@ public class Heroes {
 		selectedHeroes = new ArrayList<Hero>();
 		ArrayList<ArrayList<String>> heroesList = new ArrayList<ArrayList<String>>();
 		heroesList = displayHeroes(readFile);
+		System.out.println("Game will be played by 3 heroes!!");
 		for(int i=0;i<this.getHeroPartySize();i++){
 			String heroSymbol = "H"+String.valueOf(i+1);
             int heroNumber = GameFunctions.safeScanIntWithLimit(scanner,"Please enter the number corresponding to the hero you would like to choose: ", 1,heroesList.size()-1);

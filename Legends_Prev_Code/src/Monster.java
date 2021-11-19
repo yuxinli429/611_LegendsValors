@@ -12,8 +12,8 @@ public class Monster extends GameCharacter{
 	private int dodgeChance;
 	private int position;
 
-	public Monster(int pos){
-		this.position = pos;
+	public Monster(){
+		//this.position = pos;
 		this.damage = 0;
 		this.defence = 0;
 		this.dodgeChance = 0;

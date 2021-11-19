@@ -1,3 +1,5 @@
+import java.util.List;
+
 //Gameconfig class used to store the static values and use throughout the game
 
 public class GameConfig {
@@ -5,6 +7,7 @@ public class GameConfig {
 	private int playersCount;
 	private int teamSize;
 	private int gameSize;
+
 	
 	public int getPlayersCount() {
 		return playersCount;
@@ -29,5 +32,6 @@ public class GameConfig {
 	public void setGameSize(int gameSize) {
 		this.gameSize = gameSize;
 	}
+
 
 }

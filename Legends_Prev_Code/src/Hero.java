@@ -580,19 +580,6 @@ public class Hero extends GameCharacter{
 		GameDesigns.tableWithLines(heroDetails, false);		
 	}
 	
-	public void heroPartyDesignTop() {
-		System.out.print(GameConstants.ANSI_BLUE+"|_*_ |"+GameConstants.RESET_COLOR);
-		
-	}
-	public void heroPartyDesignBottom() {
-		System.out.print(GameConstants.ANSI_BLUE+"| |  |"+GameConstants.RESET_COLOR);
-	}
-	
-	public void heroPartyDesign() {
-		heroPartyDesignTop();
-		System.out.println();
-		heroPartyDesignBottom();
-	}
 	
 	//set hero attributes on win
 	public void heroWin(Monster monster) {
