@@ -1,4 +1,5 @@
 import java.util.List;
+import java.util.Random;
 import java.util.Scanner;
 
 //HeroNexus class has inventory
@@ -33,19 +34,17 @@ public class HeroNexus extends NexusCell{
 	@Override
 	public void cellDesign() {
 		// TODO Auto-generated method stub
-		marketDesignTop();
+		cellDesignTop();
+		System.out.println("|     |");
+		//cellDesignBottom();
 		System.out.println();
-		marketDesignBottom();
+		cellDesignTop();
 		
 	}
 	
-	public void marketDesignTop() {		
+	public void cellDesignTop() {		
 		System.out.print(GameConstants.ANSI_GREEN+CellType.HERONEXUS.getCellTypeDesign()+" - "+CellType.HERONEXUS.getCellTypeDesign()+" - "+CellType.HERONEXUS.getCellTypeDesign()+"  "+GameConstants.RESET_COLOR);
-			
-	}
-	public void marketDesignBottom() {	
-		System.out.print(GameConstants.ANSI_GREEN+"||__||"+GameConstants.RESET_COLOR);	
-	}
+	}		
 
 	@Override
 	public void moveToCell(Scanner scanner,LNMGameLayout lnmgameLayout) {
@@ -183,6 +182,21 @@ public class HeroNexus extends NexusCell{
 					System.out.println("You bought a "+weapons.get(weaponSelection-1).getName());
 			}			
 		}
+	}
+	
+	public void spawnHero(List<Hero> heroList, List<Integer> heroNexusList){
+		Random rn = new Random();
+		int randomLocation = rn.nextInt(2)+1;
+		int y;
+		if(randomLocation == 1)
+			y=0;
+		else
+			y=1;
+		for(Hero hero:heroList) {
+			hero.setCharacterPosition(heroNexusList.get(y)+1);
+			y=y+3;
+		}
+		
 	}
 
 }

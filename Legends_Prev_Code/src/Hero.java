@@ -1,7 +1,11 @@
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.text.DecimalFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Scanner;
 import java.lang.Math;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -107,7 +111,7 @@ public class Hero extends GameCharacter{
 		this.setMoney(Float.parseFloat(heroList.get(5)));
 		this.setExperince(Float.parseFloat(heroList.get(6)));
 		this.setHeroType(heroType);	
-		//this.setCharacterSymbol(heroSymbol);
+		this.setCharacterSymbol(heroSymbol);
 	}
 
 
@@ -207,7 +211,7 @@ public class Hero extends GameCharacter{
 			}	
 		}	
 	}
-
+	
 	public void back(LNMGameLayout map){
 		int size = map.getGameSize();
 		int start_nexus = size * (size - 1) + 1;
@@ -272,7 +276,8 @@ public class Hero extends GameCharacter{
 			}
 		}
 	}
-
+	
+	
 	public void attackInRange(List<Monster> mst, LNMGameLayout map, Scanner scanner) {
 		HashMap<Integer, Monster> target = new HashMap<>();
 		Pattern int_pattern = Pattern.compile("^\\s*(\\d+)\\s*");

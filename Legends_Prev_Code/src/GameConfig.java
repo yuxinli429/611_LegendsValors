@@ -7,6 +7,8 @@ public class GameConfig {
 	private int playersCount;
 	private int teamSize;
 	private int gameSize;
+	private List<Integer> heroNexusList;
+	private List<Integer> monsterNexusList;
 
 	
 	public int getPlayersCount() {
@@ -31,6 +33,22 @@ public class GameConfig {
 
 	public void setGameSize(int gameSize) {
 		this.gameSize = gameSize;
+	}
+
+	public List<Integer> getHeroNexusList() {
+		return heroNexusList;
+	}
+
+	public void setHeroNexusList(List<Integer> heroNexusList) {
+		this.heroNexusList = heroNexusList;
+	}
+
+	public List<Integer> getMonsterNexusList() {
+		return monsterNexusList;
+	}
+
+	public void setMonsterNexusList(List<Integer> monsterNexusList) {
+		this.monsterNexusList = monsterNexusList;
 	}
 
 

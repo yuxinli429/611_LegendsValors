@@ -9,6 +9,7 @@ public class LegendsMonsterAndHeroes extends RolePlayGame{
 
 	private List<Hero> gameHeroes;
 	private List<Monster> gameMonsters;
+	private List<Monster> allMonsters;
 
 
 	@Override
@@ -32,11 +33,11 @@ public class LegendsMonsterAndHeroes extends RolePlayGame{
 		//play till the game is end or ended by user
 		while(true) {
 			lnmgameLayout.drawLNMLayout(false,true,gameHeroes,gameMonsters);
-			for(Hero one_hero : gameHeroes) {
+			for(int i=0;i<gameHeroes.size();i++) {
 				boolean isValid = false;
 				int nextPosition = 0;
 				do {
-					System.out.println("Hero: " + one_hero.getName());
+					System.out.println("H"+String.valueOf(i+1)+": " + gameHeroes.get(i).getName());
 					//check for the input from user to move around the board
 					String input = GameFunctions.safeScanChar(scanner, "Please enter the input: ");
 					nextPosition = moveHeroParty(lnmgameLayout, one_hero, input, scanner);
@@ -140,18 +141,21 @@ public class LegendsMonsterAndHeroes extends RolePlayGame{
 	
 	//function to initialize the game with 
 	public LNMGameLayout initializegame(Scanner scanner) {
-		gameHeroes = new ArrayList<>();
-		gameMonsters = new ArrayList<>();
+		gameHeroes = new ArrayList<Hero>();
+		gameMonsters = new ArrayList<Monster>();
+		allMonsters = new ArrayList<Monster>();
 		this.GameConfig.setTeamSize(GameConstants.LNM_PLAYER_COUNT_MAX);
         this.GameConfig.setGameSize(GameConstants.LNM_LAYOUT_SIZE);
         FileToList readFile = new FileToList();//Parser created and used for all classes
         LNMGameLayout lnmgameLayout = new LNMGameLayout(GameConfig);//Game layout created at the beginning of the game
         Heroes heroTeam = new Heroes(GameConfig);
-        heroTeam.readInputs(scanner, readFile);
+        heroTeam.readInputs(scanner, readFile,GameConfig);
         gameHeroes = heroTeam.getSelectedHeroes();
 		//Creation of all the monsters from reading to mapping is taken care in Monsters class
 		Monsters monsters = new Monsters();
-		gameMonsters = monsters.createMonsterList(readFile);
+		allMonsters = monsters.createMonsterList(readFile);
+		MonsterNexus monsterNexus = new MonsterNexus(allMonsters,gameHeroes);
+		gameMonsters = monsterNexus.createMonsters(GameConfig);
 		return lnmgameLayout;		
 	}
 
