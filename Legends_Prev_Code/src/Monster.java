@@ -11,11 +11,13 @@ public class Monster extends GameCharacter{
 	private int defence;
 	private int dodgeChance;
 	private int position;
+	private boolean hasWon;
 
 	public Monster(){
 		this.damage = 0;
 		this.defence = 0;
 		this.dodgeChance = 0;
+		this.hasWon = false;
 	}
 	
 	
@@ -78,7 +80,7 @@ public class Monster extends GameCharacter{
 		df.format(damagecaused);
 		System.out.println(this.getName()+" caused "+damagecaused+" to"+hero.getName());
 	}
-
+	//check monster.hasWon every time after move monster
 	public void MoveMonster(LegendsMonsterAndHeroes game, LNMGameLayout lnmgameLayout){
 		int next = 0;
 		while(next == 0){
@@ -89,7 +91,6 @@ public class Monster extends GameCharacter{
 	public int MakeMove(LegendsMonsterAndHeroes game){
 		int current = this.getPosition();
 		int next = current;
-		int direction = this.rowDice();
 		int length = game.GameConfig.getGameSize();
 		//monster can't move back
 		//0 -- forward
@@ -98,33 +99,9 @@ public class Monster extends GameCharacter{
 
 		//condition check? if there is a hero on the same row then monster cannot move
 		//directly access cell?
-		if(direction == 0){
-			next = current + length;
-			this.setPosition(next);
-		}
-		else if(direction == 1){
-			//modulo
-			int num = this.position % length;
-			//1, 9, 17, 25....
-			if(num == 1){
-				return 0;
-			}
-			else {
-				next = current - 1;
-				this.setPosition(next);
-			}
-		}
-		else if(direction == 2){
-			int num = this.position % length;
-			if(num == 0){
-				return 0;
-			}
-			else{
-				next = current + 1;
-				this.setPosition(next);
-			}
+		next = current + length;
+		this.setPosition(next);
 
-		}
 		if((next >0 && next <=(length*length)))
 			return next;
 		else
@@ -137,20 +114,13 @@ public class Monster extends GameCharacter{
 			position = MakeMove(game);
 			CheckMonsterMove(position, lnmgameLayout, game);
 		}
+		else if(gameCells.get(position - 1) == CellType.HERONEXUS.getCellTypeNumber()){
+			this.hasWon = true;
+			lnmgameLayout.setGameStartPosition(position);
+		}
 		else{
 			lnmgameLayout.setGameStartPosition(position);
 		}
-	}
-	public int rowDice(){
-		//monster can't move back
-		//0 -- forward
-		//1 -- left
-		//2 -- right
-		Random rand = new Random(); //instance of random class
-		int upperbound = 3;
-		//generate random values from 0-24
-		int int_random = rand.nextInt(upperbound);
-		return int_random;
 	}
 
 }
