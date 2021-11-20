@@ -3,6 +3,7 @@ import java.lang.reflect.Array;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 import java.lang.Math;
@@ -210,8 +211,18 @@ public class Hero extends GameCharacter{
 			}	
 		}	
 	}
+	
+	public void back(LNMGameLayout map){
+		int size = map.getGameSize();
+		int start_nexus = size * (size - 1) + 1;
+		heroLocation = (heroLocation - 1) % size + start_nexus;
+	}
 
 	public int teleport(LNMGameLayout map, Scanner scanner, List<Monster> mst, List<Hero> hero) {
+		/**
+		 * Teleport a hero to another cell and return the position of teleport destination.
+		 * If the player choose to cancel a teleport, then this method will return the current position.
+		 */
 		Pattern int_pattern = Pattern.compile("^\\s*(\\d+)\\s*");
 		Pattern quit_pattern = Pattern.compile("^\\s*(q)\\s*");
 		int farthest_hero = map.getGameSize() * map.getGameSize();
@@ -241,10 +252,10 @@ public class Hero extends GameCharacter{
 			} else {
 				int tele_des = inp_int;
 				int farthest_mst = 0;
-				int mod_des = tele_des % map.getGameSize();
-				int mod_cur = heroLocation % map.getGameSize();
+				int mod_des = (tele_des - 1) % map.getGameSize();
+				int mod_cur = (heroLocation - 1) % map.getGameSize();
 				for(Monster m : mst) {
-					if(Math.abs((m.getPosition() % map.getGameSize()) - mod_des) < 2) {
+					if(Math.abs(((m.getPosition() - 1) % map.getGameSize()) - mod_des) < 2) {
 						farthest_mst = Math.max(farthest_mst, m.getPosition());
 					}
 				}
@@ -259,8 +270,64 @@ public class Hero extends GameCharacter{
 				} else if((tele_des / map.getGameSize()) < (farthest_mst / map.getGameSize())) {
 					System.out.println("Cannot teleport to a cell behind monsters in that lane.");
 				} else {
+					heroLocation = tele_des;
 					return tele_des;
 				}
+			}
+		}
+	}
+	
+	
+	public void attackInRange(List<Monster> mst, LNMGameLayout map, Scanner scanner) {
+		HashMap<Integer, Monster> target = new HashMap<>();
+		Pattern int_pattern = Pattern.compile("^\\s*(\\d+)\\s*");
+		Pattern quit_pattern = Pattern.compile("^\\s*(q)\\s*");
+		for(Monster m : mst) {
+			int mst_row = (m.getPosition() - 1) / map.getGameSize();
+			int mst_col = (m.getPosition() - 1) % map.getGameSize();
+			int hero_row = (heroLocation - 1) / map.getGameSize();
+			int hero_col = (heroLocation - 1) % map.getGameSize();
+			if(Math.abs(mst_row - hero_row) < 2 && Math.abs(mst_col - hero_col) < 2) {
+				target.put(m.getPosition(), m);
+			}
+		}
+		if(target.isEmpty()) {
+			System.out.println("No monsters in your range of attack.");
+			return;
+		}
+		String msg = "Please enter the position of monsters around the hero to select a target to attack.\n";
+		msg += "(Neighboring monsters: ";
+		int index = 0;
+		for(int tar : target.keySet()) {
+			msg += tar;
+			if(index < target.size()) {
+				msg += ", ";
+			}
+			index++;
+		}
+		msg += ")";
+		while(true) {
+			System.out.println(msg);
+			boolean inp_valid = false;
+			String inp = "";
+			int inp_int = 0;
+			while (!inp_valid) {
+				inp = scanner.nextLine();
+				Matcher match_q = quit_pattern.matcher(inp);
+				Matcher match_int = int_pattern.matcher(inp);
+				if (!match_q.find() && !match_int.find()) {
+					System.out.println("Invalid input. Please enter again!");
+				} else if (match_q.find()) {
+					return;
+				} else {
+					inp_int = Integer.parseInt(match_int.group(1));
+					inp_valid = true;
+				}
+			}
+			if(target.containsKey(inp_int)) {
+				fightMonster(target.get(inp_int), scanner);
+			} else {
+				System.out.println("Such a monster doesn't exist! Please enter again.");
 			}
 		}
 	}
