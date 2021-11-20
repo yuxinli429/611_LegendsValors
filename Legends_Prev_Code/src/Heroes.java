@@ -12,7 +12,7 @@ public class Heroes {
 		
 	}
 	
-	public void readInputs(Scanner scanner,FileToList readFile) {
+	public void readInputs(Scanner scanner,FileToList readFile,GameConfig gameConfig) {
 		selectedHeroes = new ArrayList<Hero>();
 		ArrayList<ArrayList<String>> heroesList = new ArrayList<ArrayList<String>>();
 		heroesList = displayHeroes(readFile);
@@ -36,6 +36,8 @@ public class Heroes {
     			gameHero.mapObject(heroesList.get(heroNumber),heroSymbol);//mapper for hero class
                 selectedHeroes.add(gameHero); 
     		}
+            HeroNexus heroNexus = new HeroNexus();
+            heroNexus.spawnHero(selectedHeroes, gameConfig.getHeroNexusList());
 		}
 	}
 	

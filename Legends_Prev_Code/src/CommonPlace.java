@@ -45,7 +45,7 @@ public class CommonPlace extends Cell{
 		int isMonsters = rn.nextInt(2)+1;
 		if(isMonsters == 1) {
 			System.out.println("Quick, monsters are here!!!");
-			fightMonsters(scanner);
+			//fightMonsters(scanner);
 
 		}
 		else {
@@ -55,7 +55,7 @@ public class CommonPlace extends Cell{
 	
 	//Creates monsters based on the propability above.
 	//picks random monsters matching the same level as hero
-	public List<Monster> createMonsters() {
+	/*public List<Monster> createMonsters() {
 		List<Monster> cellMonsters = new ArrayList<Monster>();
 		for(int i=0;i<heroList.size();i++) {
 			List<Integer> propableMonsters = new ArrayList<Integer>();
@@ -78,6 +78,6 @@ public class CommonPlace extends Cell{
 		for(int i=0;i<heroList.size();i++) {
 			heroList.get(i).fightMonster(cellMonsters.get(i), scanner);
 		}
-	}
+	}*/
 
 }
