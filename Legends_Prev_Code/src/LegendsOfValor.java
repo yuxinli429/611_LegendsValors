@@ -209,6 +209,7 @@ public class LegendsOfValor extends RolePlayGame{
 		//if cell is nexus ask user if he would like to sell/buy modified not to check whether he would like to enter since it would give Hero chance to move twice
 		if(gameCells.get(nextPosition-1)== CellType.HERONEXUS.getCellTypeNumber()) {
 			hero.setCharacterPosition(nextPosition);
+			hero.updateFarthestRow();
 			System.out.println(hero.getCharacterSymbol()+", You are in the nexus!!");
 			boolean isDone = false;
 			while(!isDone) {
@@ -253,6 +254,7 @@ public class LegendsOfValor extends RolePlayGame{
 			koulouCell.addSpecialAbility(hero);
 		}
 		hero.setCharacterPosition(nextPosition);
+		hero.updateFarthestRow();
 	}
 	
 	
