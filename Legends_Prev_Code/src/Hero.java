@@ -307,6 +307,19 @@ public class Hero extends GameCharacter{
 	
 	
 	public boolean attackInRange(List<Monster> mst, LNMGameLayout map, Scanner scanner) {
+		boolean has_mst_nearby = false;
+		int h_pos = getCharacterPosition();
+		int b_size = map.getGameSize();
+		int h_row = (h_pos - 1) / b_size;
+		for(Monster m : mst) {
+			int m_pos = m.getCharacterPosition();
+			int m_row = (m_pos - 1) / b_size;
+			int h_m_gap = Math.abs(((h_pos - 1) % b_size) - ((m_pos - 1) % b_size));
+			if(h_m_gap < 2 && m_row == h_row) {
+				has_mst_nearby = true;
+				break;
+			}
+		}
 		HashMap<Integer, Monster> target = new HashMap<>();
 		Pattern int_pattern = Pattern.compile("^\\s*(\\d+)\\s*");
 		Pattern quit_pattern = Pattern.compile("^\\s*(q)\\s*");
@@ -336,7 +349,9 @@ public class Hero extends GameCharacter{
 		msg += ")";
 		while(true) {//need to change since it is going in loop
 			System.out.println(msg);
-			System.out.println("(Or press q to cancel this attack)");
+			if(!has_mst_nearby) {
+				System.out.println("(Or press q to cancel this attack)");
+			}
 			boolean inp_valid = false;
 			String inp = "";
 			int inp_int = 0;
@@ -345,6 +360,9 @@ public class Hero extends GameCharacter{
 				Matcher match_q = quit_pattern.matcher(inp);
 				Matcher match_int = int_pattern.matcher(inp);
 				boolean quit = match_q.find();
+				if(has_mst_nearby) {
+					quit = false;
+				}
 				boolean if_attack = match_int.find();
 				if (!quit && !if_attack) {
 					System.out.println("Invalid input. Please enter again!");
