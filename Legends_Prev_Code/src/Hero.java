@@ -28,6 +28,7 @@ public class Hero extends GameCharacter{
 	private int heroNexus;
 	private String attributeChanged;
 	private boolean heroWonGame;
+	private int farthest_row;
 	
 	//Creates inventory of the hero when hero is created
 	public Hero() {
@@ -35,6 +36,7 @@ public class Hero extends GameCharacter{
 		this.setDamageReduction(0);
 		this.setGameLevel(1);
 		this.setHealthPower(100*this.getGameLevel());
+		farthest_row = 7;
 	}
 	
 
@@ -44,6 +46,21 @@ public class Hero extends GameCharacter{
 
 	public void setMana(double mana) {
 		this.mana = mana;
+	}
+
+	public int getFarthestRow() {
+		return farthest_row;
+	}
+
+	public void setFarthestRow(int farthest_row) {
+		farthest_row = farthest_row;
+	}
+
+	public void updateFarthestRow() {
+		int cur_row = (getCharacterPosition() - 1) / 8;
+		if(cur_row < farthest_row) {
+			farthest_row = cur_row;
+		}
 	}
 
 	public float getMoney() {
@@ -107,6 +124,7 @@ public class Hero extends GameCharacter{
 		this.setExperince(Float.parseFloat(heroList.get(6)));
 		this.setHeroType(heroType);	
 		this.setCharacterSymbol(heroSymbol);
+		this.setFarthestRow(7);
 	}
 
 
@@ -293,9 +311,9 @@ public class Hero extends GameCharacter{
 					System.out.println("Cannot teleport to a cell in the same lane.");
 				} else if(hero_pos.contains(tele_des)) {
 					System.out.println("Cannot teleport to a cell with hero.");
-				} else if((tele_des / map.getGameSize()) < (farthest_hero / map.getGameSize())) {
-					System.out.println("Cannot teleport to areas which have not been explored.");
-				} else if((tele_des / map.getGameSize()) < (farthest_mst / map.getGameSize())) {
+				} else if(((tele_des - 1) / map.getGameSize()) < farthest_row) {
+					System.out.println("Cannot teleport to areas which have not been explored by " + getCharacterSymbol() + ")");
+				} else if(((tele_des - 1) / map.getGameSize()) < ((farthest_mst - 1) / map.getGameSize())) {
 					System.out.println("Cannot teleport to a cell behind monsters in that lane.");
 				} else {
 					/*this.setCharacterPosition(tele_des);*/
