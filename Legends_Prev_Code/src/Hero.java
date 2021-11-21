@@ -263,11 +263,15 @@ public class Hero extends GameCharacter{
 						farthest_mst = Math.max(farthest_mst, m.getCharacterPosition());
 					}
 				}
-				if(map.getGameCells().get(tele_des) == CellType.INACCESSIBLECELL.getCellTypeNumber()) {
+				List<Integer> hero_pos = new ArrayList<>();
+				for(Hero h : hero) {
+					hero_pos.add(h.getCharacterPosition());
+				}
+				if(map.getGameCells().get(tele_des -1) == CellType.INACCESSIBLECELL.getCellTypeNumber()) {
 					System.out.println("Cannot teleport to an inaccessible cell.");
 				} else if(Math.abs(mod_des - mod_cur) < 2) {
 					System.out.println("Cannot teleport to a cell in the same lane.");
-				} else if(hero.contains(tele_des)) {
+				} else if(hero_pos.contains(tele_des)) {
 					System.out.println("Cannot teleport to a cell with hero.");
 				} else if((tele_des / map.getGameSize()) < (farthest_hero / map.getGameSize())) {
 					System.out.println("Cannot teleport to areas which have not been explored.");
