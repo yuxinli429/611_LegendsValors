@@ -10,7 +10,7 @@ public class MonsterNexus extends NexusCell{
 	List<Hero> heroList;
 	
 	@Override
-	public void moveToCell(Scanner scanner, LNMGameLayout lnmgameLayout) {
+	public void moveToCell(Hero hero) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -39,10 +39,14 @@ public class MonsterNexus extends NexusCell{
 					propableMonsters.add(j);
 				}				
 			}
-			int randomMonster = rn.nextInt(propableMonsters.size());
-			cellMonsters.add(monsterList.get(propableMonsters.get(randomMonster)));
-			monsterList.get(propableMonsters.get(randomMonster)).setCharacterPosition(monsterNexusList.get(y)+1);
-			monsterList.get(propableMonsters.get(randomMonster)).setCharacterSymbol("M"+String.valueOf(i+1));
+			Monster newMonster;
+			do {
+				int randomMonster = rn.nextInt(propableMonsters.size());
+				newMonster = monsterList.get(propableMonsters.get(randomMonster));
+			}while(cellMonsters.contains(newMonster));
+			cellMonsters.add(newMonster);
+			newMonster.setCharacterPosition(monsterNexusList.get(y)+1);
+			newMonster.setCharacterSymbol("M"+String.valueOf(i+1));
 			y=y+3;
 		}
 		return cellMonsters;

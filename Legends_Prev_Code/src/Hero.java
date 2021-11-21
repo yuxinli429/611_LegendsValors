@@ -123,7 +123,7 @@ public class Hero extends GameCharacter{
 	public void sellHeroInventory(Scanner scanner) {
 		boolean isDone = false;
 		while(!isDone) {
-			int inventoryTypeOption = GameFunctions.safeScanIntWithLimit(scanner,this.getName()+", Please enter the number you would like to sell/perform at the maket:\n1.Potions\n2.Spell\n3.Weapons\n4.Armor\n5.Exit HeroNexus\nInput: ", 1,5);
+			int inventoryTypeOption = GameFunctions.safeScanIntWithLimit(scanner,this.getName()+", Please enter the number you would like to sell/perform at the maket:\n1.Potions\n2.Spell\n3.Weapons\n4.Armor\n5.Exit Menu\nInput: ", 1,5);
 			scanner.nextLine();	
 			if(inventoryTypeOption==1)
 				sellPotion(scanner);
@@ -255,8 +255,8 @@ public class Hero extends GameCharacter{
 				int mod_des = (tele_des - 1) % map.getGameSize();
 				int mod_cur = (heroLocation - 1) % map.getGameSize();
 				for(Monster m : mst) {
-					if(Math.abs(((m.getPosition() - 1) % map.getGameSize()) - mod_des) < 2) {
-						farthest_mst = Math.max(farthest_mst, m.getPosition());
+					if(Math.abs(((m.getCharacterPosition() - 1) % map.getGameSize()) - mod_des) < 2) {
+						farthest_mst = Math.max(farthest_mst, m.getCharacterPosition());
 					}
 				}
 				if(map.getGameCells().get(tele_des - 1) != CellType.INACCESSIBLECELL.getCellTypeNumber()) {
@@ -283,12 +283,12 @@ public class Hero extends GameCharacter{
 		Pattern int_pattern = Pattern.compile("^\\s*(\\d+)\\s*");
 		Pattern quit_pattern = Pattern.compile("^\\s*(q)\\s*");
 		for(Monster m : mst) {
-			int mst_row = (m.getPosition() - 1) / map.getGameSize();
-			int mst_col = (m.getPosition() - 1) % map.getGameSize();
+			int mst_row = (m.getCharacterPosition() - 1) / map.getGameSize();
+			int mst_col = (m.getCharacterPosition() - 1) % map.getGameSize();
 			int hero_row = (heroLocation - 1) / map.getGameSize();
 			int hero_col = (heroLocation - 1) % map.getGameSize();
 			if(Math.abs(mst_row - hero_row) < 2 && Math.abs(mst_col - hero_col) < 2) {
-				target.put(m.getPosition(), m);
+				target.put(m.getCharacterPosition(), m);
 			}
 		}
 		if(target.isEmpty()) {

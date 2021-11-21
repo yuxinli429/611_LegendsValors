@@ -14,7 +14,7 @@ public abstract class Cell {
 	
 	public abstract void cellDesign();
 	
-	public abstract void moveToCell(Scanner scanner,LNMGameLayout lnmgameLayout);
+	public abstract void moveToCell(Hero hero);
 
 
 }
