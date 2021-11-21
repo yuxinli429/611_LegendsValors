@@ -324,7 +324,7 @@ public class Hero extends GameCharacter{
 		}
 		String msg = "Please enter the position of monsters around the hero to select a target to attack.\n";
 		msg += "(Neighboring monsters: ";
-		int index = 0;
+		int index = 1;
 		for(int tar : target.keySet()) {
 			msg += tar;
 			if(index < target.size()) {
@@ -335,7 +335,7 @@ public class Hero extends GameCharacter{
 		msg += ")";
 		while(true) {//need to change since it is going in loop
 			System.out.println(msg);
-			System.out.println("(Or )");
+			System.out.println("(Or press q to cancel this attack)");
 			boolean inp_valid = false;
 			String inp = "";
 			int inp_int = 0;
