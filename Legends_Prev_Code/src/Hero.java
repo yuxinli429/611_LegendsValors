@@ -432,6 +432,7 @@ public class Hero extends GameCharacter{
 		}
 		else {
 			System.out.println(this.getName()+" lost!!");
+			heroLost();
 		}
 		
 	}
@@ -627,6 +628,7 @@ public class Hero extends GameCharacter{
 	public void heroLost() {
 		this.setMoney(this.getMoney()/2);
 		this.setCharacterPosition(this.getHeroNexus());
+		this.setHealthPower(100);
 	}
 
 

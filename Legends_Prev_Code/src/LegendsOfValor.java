@@ -108,7 +108,7 @@ public class LegendsOfValor extends RolePlayGame{
 			if(gameMonsters.get(j).getCharacterPosition()>0 && gameMonsters.get(j).getCharacterPosition()<this.GameConfig.getGameSize()*this.GameConfig.getGameSize()) {
 				System.out.println(gameMonsters.get(j).getCharacterSymbol()+", "+gameMonsters.get(i).getName()+" made a move");
 				gameMonsters.get(j).MoveMonster(lnmgameLayout);
-				//gameHeroes.get(i).attackInRange(gameMonsters, lnmgameLayout, scanner);
+				gameHeroes.get(i).attackInRange(gameMonsters, lnmgameLayout, scanner);
 			}					
 		}
 	}
