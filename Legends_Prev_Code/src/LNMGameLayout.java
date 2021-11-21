@@ -62,6 +62,10 @@ public class LNMGameLayout extends GameLayout{
 		return heroNexus;
 	}
 	
+	public List<Integer> monsterNexusLoc() {
+		return monsterNexus;
+	}
+	
 	
 	public void drawLNMLayout(boolean isMarket, boolean isInventory,List<Hero> heroesList, List<Monster>  monsterList) {
 		drawMap(heroesList,monsterList);
@@ -122,37 +126,20 @@ public class LNMGameLayout extends GameLayout{
 	}
 	
 	public void cellTop(int cellTypeNumber) {
-		switch(cellTypeNumber) {
-			case 1:
-				//System.out.print(GameConstants.ANSI_GREEN+CellType.HERONEXUS.getCellTypeDesign()+" - "+CellType.HERONEXUS.getCellTypeDesign()+" - "+CellType.HERONEXUS.getCellTypeDesign()+"  "+GameConstants.RESET_COLOR);
-				System.out.print(CellType.HERONEXUS.getCellTypeDesign()+" - "+CellType.HERONEXUS.getCellTypeDesign()+" - "+CellType.HERONEXUS.getCellTypeDesign()+"  ");
-				break;
-			case 2:
-				//System.out.print(GameConstants.ANSI_GREEN+CellType.MONSTERNEXUS.getCellTypeDesign()+" - "+CellType.MONSTERNEXUS.getCellTypeDesign()+" - "+CellType.MONSTERNEXUS.getCellTypeDesign()+"  "+GameConstants.RESET_COLOR);
-				System.out.print(CellType.MONSTERNEXUS.getCellTypeDesign()+" - "+CellType.MONSTERNEXUS.getCellTypeDesign()+" - "+CellType.MONSTERNEXUS.getCellTypeDesign()+"  ");
-				break;
-			case 3:
-				//System.out.print(GameConstants.ANSI_RED+CellType.INACCESSIBLECELL.getCellTypeDesign()+" - "+CellType.INACCESSIBLECELL.getCellTypeDesign()+" - "+CellType.INACCESSIBLECELL.getCellTypeDesign()+"  "+GameConstants.RESET_COLOR);
-				System.out.print(CellType.INACCESSIBLECELL.getCellTypeDesign()+" - "+CellType.INACCESSIBLECELL.getCellTypeDesign()+" - "+CellType.INACCESSIBLECELL.getCellTypeDesign()+"  ");
-				break;
-			case 4:
-				//System.out.print(GameConstants.ANSI_BLUE+CellType.PLAIN.getCellTypeDesign()+" - "+CellType.PLAIN.getCellTypeDesign()+" - "+CellType.PLAIN.getCellTypeDesign()+"  "+GameConstants.RESET_COLOR);
-				System.out.print(CellType.PLAIN.getCellTypeDesign()+" - "+CellType.PLAIN.getCellTypeDesign()+" - "+CellType.PLAIN.getCellTypeDesign()+"  ");
-				break;
-			case 5:
-				//System.out.print(GameConstants.ANSI_BLUE+CellType.BUSH.getCellTypeDesign()+" - "+CellType.BUSH.getCellTypeDesign()+" - "+CellType.BUSH.getCellTypeDesign()+"  "+GameConstants.RESET_COLOR);
-				System.out.print(CellType.BUSH.getCellTypeDesign()+" - "+CellType.BUSH.getCellTypeDesign()+" - "+CellType.BUSH.getCellTypeDesign()+"  ");
-				break;
-			case 6:
-				//System.out.print(GameConstants.ANSI_BLUE+CellType.CAVE.getCellTypeDesign()+" - "+CellType.CAVE.getCellTypeDesign()+" - "+CellType.CAVE.getCellTypeDesign()+"  "+GameConstants.RESET_COLOR);
-				System.out.print(CellType.CAVE.getCellTypeDesign()+" - "+CellType.CAVE.getCellTypeDesign()+" - "+CellType.CAVE.getCellTypeDesign()+"  ");
-				break;
-			case 7:
-				//System.out.print(GameConstants.ANSI_BLUE+CellType.KOULOU.getCellTypeDesign()+" - "+CellType.KOULOU.getCellTypeDesign()+" - "+CellType.KOULOU.getCellTypeDesign()+"  "+GameConstants.RESET_COLOR);
-				System.out.print(CellType.KOULOU.getCellTypeDesign()+" - "+CellType.KOULOU.getCellTypeDesign()+" - "+CellType.KOULOU.getCellTypeDesign()+"  ");
-				break;
-		}
-		
+		if(cellTypeNumber == CellType.HERONEXUS.getCellTypeNumber())
+			System.out.print(GameConstants.ANSI_GREEN+CellType.HERONEXUS.getCellTypeDesign()+" - "+CellType.HERONEXUS.getCellTypeDesign()+" - "+CellType.HERONEXUS.getCellTypeDesign()+"  "+GameConstants.RESET_COLOR);
+		else if(cellTypeNumber == CellType.MONSTERNEXUS.getCellTypeNumber())
+			System.out.print(GameConstants.ANSI_GREEN+CellType.MONSTERNEXUS.getCellTypeDesign()+" - "+CellType.MONSTERNEXUS.getCellTypeDesign()+" - "+CellType.MONSTERNEXUS.getCellTypeDesign()+"  "+GameConstants.RESET_COLOR);
+		else if(cellTypeNumber == CellType.INACCESSIBLECELL.getCellTypeNumber())
+			System.out.print(GameConstants.ANSI_RED+CellType.INACCESSIBLECELL.getCellTypeDesign()+" - "+CellType.INACCESSIBLECELL.getCellTypeDesign()+" - "+CellType.INACCESSIBLECELL.getCellTypeDesign()+"  "+GameConstants.RESET_COLOR);
+		else if(cellTypeNumber == CellType.PLAIN.getCellTypeNumber())
+			System.out.print(GameConstants.ANSI_BLUE+CellType.PLAIN.getCellTypeDesign()+" - "+CellType.PLAIN.getCellTypeDesign()+" - "+CellType.PLAIN.getCellTypeDesign()+"  "+GameConstants.RESET_COLOR);
+		else if(cellTypeNumber == CellType.BUSH.getCellTypeNumber())
+			System.out.print(GameConstants.ANSI_BLUE+CellType.BUSH.getCellTypeDesign()+" - "+CellType.BUSH.getCellTypeDesign()+" - "+CellType.BUSH.getCellTypeDesign()+"  "+GameConstants.RESET_COLOR);
+		else if(cellTypeNumber == CellType.CAVE.getCellTypeNumber())
+			System.out.print(GameConstants.ANSI_BLUE+CellType.CAVE.getCellTypeDesign()+" - "+CellType.CAVE.getCellTypeDesign()+" - "+CellType.CAVE.getCellTypeDesign()+"  "+GameConstants.RESET_COLOR);
+		else if(cellTypeNumber == CellType.KOULOU.getCellTypeNumber())
+			System.out.print(GameConstants.ANSI_BLUE+CellType.KOULOU.getCellTypeDesign()+" - "+CellType.KOULOU.getCellTypeDesign()+" - "+CellType.KOULOU.getCellTypeDesign()+"  "+GameConstants.RESET_COLOR);		
 	}
 	
 	public void cellMid(String cellvalue, boolean isInaccessibleCell) {

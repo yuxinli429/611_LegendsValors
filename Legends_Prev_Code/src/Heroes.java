@@ -6,6 +6,7 @@ public class Heroes {
 	
 	private List<Hero> selectedHeroes;
 	private int heroPartySize;
+	private int remHeroes=0;
 	
 	public Heroes(GameConfig gameConfig) {
 		this.setHeroPartySize(gameConfig.getTeamSize());
@@ -80,6 +81,14 @@ public class Heroes {
 
 	public void setHeroPartySize(int heroPartySize) {
 		this.heroPartySize = heroPartySize;
+	}
+	
+	public int checkRemHeroes(List<Hero> gameHeroes) {
+		for(int i=0;i<gameHeroes.size();i++) {
+			if(!gameHeroes.get(i).isHeroWonGame())
+				remHeroes++;
+		}
+		return remHeroes;
 	}
 
 }
