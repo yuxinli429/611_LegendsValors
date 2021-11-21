@@ -68,6 +68,7 @@ public class LegendsOfValor extends RolePlayGame{
 					gameHeroes.get(i).heroWonGame(lnmgameLayout);
 				}
 			}
+			makeMonstersMove(scanner, lnmgameLayout);
 			gameRounds++;//keeping the count of game rounds
 			//check the remaining heroes who haven't already won
 			Heroes playingHeroes = new Heroes(GameConfig);
@@ -77,7 +78,21 @@ public class LegendsOfValor extends RolePlayGame{
 			
 	}
 	
-	//Function to check hero still in game and ask for inputs and make monster moves
+	//Each monster moves after once heroes are done moving and check if they move into vicinity of the attack
+	private void makeMonstersMove(Scanner scanner, LNMGameLayout lnmgameLayout) {
+		for(int i=0;i<gameHeroes.size();i++) {
+			for(int j=i;j<gameMonsters.size();j=j+3) {
+				if(gameMonsters.get(j).getCharacterPosition()>0 && gameMonsters.get(j).getCharacterPosition()<this.GameConfig.getGameSize()*this.GameConfig.getGameSize()) {
+					System.out.println(gameMonsters.get(j).getCharacterSymbol()+", "+gameMonsters.get(j).getName()+" made a move");
+					gameMonsters.get(j).MoveMonster(lnmgameLayout);
+					lnmgameLayout.drawLNMLayout(false,true,gameHeroes,gameMonsters);
+					gameHeroes.get(i).attackInRange(gameMonsters, lnmgameLayout, scanner);
+				}	
+			}
+		}
+	}
+	
+	//Function to check hero still in game and ask for inputs
 	private void validateCharacterMoves(Scanner scanner, LNMGameLayout lnmgameLayout, HeroNexus market, int i) {
 		if(lnmgameLayout.getGameCells().get(gameHeroes.get(i).getCharacterPosition()-1) == CellType.HERONEXUS.getCellTypeNumber())
 			lnmgameLayout.drawLNMLayout(true,false,gameHeroes,gameMonsters);
@@ -104,14 +119,14 @@ public class LegendsOfValor extends RolePlayGame{
 		gameHeroes.get(i).setHealthPower(gameHeroes.get(i).getHealthPower()*1.1);
 		gameHeroes.get(i).setMana(gameHeroes.get(i).getMana()*1.1);
 		//all the monsters in the lane move after hero's move
-		for(int j=i;j<gameMonsters.size();j=j+3) {
+		/*for(int j=i;j<gameMonsters.size();j=j+3) {
 			if(gameMonsters.get(j).getCharacterPosition()>0 && gameMonsters.get(j).getCharacterPosition()<this.GameConfig.getGameSize()*this.GameConfig.getGameSize()) {
 				System.out.println(gameMonsters.get(j).getCharacterSymbol()+", "+gameMonsters.get(i).getName()+" made a move");
 				gameMonsters.get(j).MoveMonster(lnmgameLayout);
 				lnmgameLayout.drawLNMLayout(false,true,gameHeroes,gameMonsters);
 				gameHeroes.get(i).attackInRange(gameMonsters, lnmgameLayout, scanner);
 			}					
-		}
+		}*/
 	}
 	
 	//function to check for user inputs and validity of movement in the map
