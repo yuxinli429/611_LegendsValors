@@ -263,7 +263,7 @@ public class Hero extends GameCharacter{
 						farthest_mst = Math.max(farthest_mst, m.getCharacterPosition());
 					}
 				}
-				if(map.getGameCells().get(tele_des - 1) == CellType.INACCESSIBLECELL.getCellTypeNumber()) {
+				if(map.getGameCells().get(tele_des) == CellType.INACCESSIBLECELL.getCellTypeNumber()) {
 					System.out.println("Cannot teleport to an inaccessible cell.");
 				} else if(Math.abs(mod_des - mod_cur) < 2) {
 					System.out.println("Cannot teleport to a cell in the same lane.");
@@ -291,7 +291,7 @@ public class Hero extends GameCharacter{
 			int mst_col = (m.getCharacterPosition() - 1) % map.getGameSize();
 			int hero_row = (getCharacterPosition() - 1) / map.getGameSize();
 			int hero_col = (getCharacterPosition() - 1) % map.getGameSize();
-			if(Math.abs(mst_row - hero_row) < 2 && Math.abs(mst_col - hero_col) < 2) {
+			if((Math.abs(mst_row - hero_row) < 2) && (Math.abs(mst_col - hero_col) < 2)) {
 				target.put(m.getCharacterPosition(), m);
 			}
 		}
