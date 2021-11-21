@@ -121,9 +121,13 @@ public class LegendsOfValor extends RolePlayGame{
 				isValidLane = true;
 		}
 		else if(GameConstants.LNM_BACK_KEY.equalsIgnoreCase(nextPosition)) {
-			hero.back(lnmgameLayout);
-			nextPostn = hero.getCharacterPosition();
-			isValidLane = true;
+			boolean back_succeed = hero.back(lnmgameLayout, gameHeroes);
+			if(back_succeed) {
+				nextPostn = hero.getCharacterPosition();
+				isValidLane = true;
+			} else {
+				return -10;
+			}
 		}
 		else if(GameConstants.LNM_LEFT_KEY.equalsIgnoreCase(nextPosition)) {
 			nextPostn = currentPosition-1;

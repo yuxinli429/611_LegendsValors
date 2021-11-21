@@ -206,8 +206,36 @@ public class Hero extends GameCharacter{
 		}	
 	}
 	
-	public void back(LNMGameLayout map){
-		this.setCharacterPosition(this.getHeroNexus());
+	public boolean back(LNMGameLayout map, List<Hero> hero){
+		List<Integer> hero_pos = new ArrayList<>();
+		for(Hero h : hero) {
+			if(h != this) {
+				hero_pos.add(h.getCharacterPosition());
+			}
+		}
+		int nexus_pos = getHeroNexus();
+		int another_nexus;
+		if((nexus_pos - 1) % map.getGameSize() == 0) {
+			another_nexus = nexus_pos + 1;
+		} else if(nexus_pos % map.getGameSize() == 0) {
+			another_nexus = nexus_pos - 1;
+		} else {
+			if(map.getGameCells().get(nexus_pos) == CellType.INACCESSIBLECELL.getCellTypeNumber()) {
+				another_nexus = nexus_pos - 1;
+			} else {
+				another_nexus = nexus_pos + 1;
+			}
+		}
+		if(!hero_pos.contains(nexus_pos)) {
+			setCharacterPosition(nexus_pos);
+			return true;
+		} else if(!hero_pos.contains(another_nexus)) {
+			setCharacterPosition(another_nexus);
+			return true;
+		} else {
+			System.out.println("Nexus are full. Back failed.");
+			return false;
+		}
 	}
 
 	public int teleport(LNMGameLayout map, Scanner scanner, List<Monster> mst, List<Hero> hero) {
@@ -277,7 +305,7 @@ public class Hero extends GameCharacter{
 	}
 	
 	
-	public void attackInRange(List<Monster> mst, LNMGameLayout map, Scanner scanner) {
+	public boolean attackInRange(List<Monster> mst, LNMGameLayout map, Scanner scanner) {
 		HashMap<Integer, Monster> target = new HashMap<>();
 		Pattern int_pattern = Pattern.compile("^\\s*(\\d+)\\s*");
 		Pattern quit_pattern = Pattern.compile("^\\s*(q)\\s*");
@@ -292,7 +320,7 @@ public class Hero extends GameCharacter{
 		}
 		if(target.isEmpty()) {
 			System.out.println("No monsters in your range of attack.");
-			return;
+			return false;
 		}
 		String msg = "Please enter the position of monsters around the hero to select a target to attack.\n";
 		msg += "(Neighboring monsters: ";
@@ -307,6 +335,7 @@ public class Hero extends GameCharacter{
 		msg += ")";
 		while(true) {//need to change since it is going in loop
 			System.out.println(msg);
+			System.out.println("(Or )");
 			boolean inp_valid = false;
 			String inp = "";
 			int inp_int = 0;
@@ -319,7 +348,7 @@ public class Hero extends GameCharacter{
 				if (!quit && !if_attack) {
 					System.out.println("Invalid input. Please enter again!");
 				} else if (quit) {
-					return;
+					return false;
 				} else {
 					inp_int = Integer.parseInt(match_int.group(1));
 					inp_valid = true;
@@ -327,6 +356,7 @@ public class Hero extends GameCharacter{
 			}
 			if(target.containsKey(inp_int)) {
 				fightMonster(target.get(inp_int), scanner);
+				return true;
 			} else {
 				System.out.println("Such a monster doesn't exist! Please enter again.");
 			}
