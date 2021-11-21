@@ -101,6 +101,11 @@ public class LegendsOfValor extends RolePlayGame{
 			if(arr1[0] == arr2[0])
 				isValidLane = true;
 		}
+		else if(GameConstants.LNM_BACK_KEY.equalsIgnoreCase(nextPosition)) {
+			hero.back(lnmgameLayout);
+			nextPostn = hero.getCharacterPosition();
+			isValidLane = true;
+		}
 		else if(GameConstants.LNM_LEFT_KEY.equalsIgnoreCase(nextPosition)) {
 			nextPostn = currentPosition-1;
 			int[] arr1 = new int[2];
@@ -172,7 +177,7 @@ public class LegendsOfValor extends RolePlayGame{
 		//check for common place. Hero gains the special abilities in each cell inside the each cell class
 		else {
 			hero.setCharacterPosition(nextPosition);
-			hero.attackInRange(gameMonsters, lnmgameLayout, scanner);
+			//hero.attackInRange(gameMonsters, lnmgameLayout, scanner);
 		}
 	}
 	

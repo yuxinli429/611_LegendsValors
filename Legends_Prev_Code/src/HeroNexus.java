@@ -185,6 +185,7 @@ public class HeroNexus extends NexusCell{
 			y=1;
 		for(Hero hero:heroList) {
 			hero.setCharacterPosition(heroNexusList.get(y)+1);
+			hero.setHeroNexus(heroNexusList.get(y)+1);
 			y=y+3;
 		}
 		

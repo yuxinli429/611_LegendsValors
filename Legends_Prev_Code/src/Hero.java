@@ -26,6 +26,7 @@ public class Hero extends GameCharacter{
 	private Weapon heroWeapon;
 	private Armor heroArmor;
 	private int damageReduction;
+	private int heroNexus;
 	
 	//Creates inventory of the hero when hero is created
 	public Hero() {
@@ -212,11 +213,8 @@ public class Hero extends GameCharacter{
 		}	
 	}
 	
-	public int back(LNMGameLayout map){
-		int size = map.getGameSize();
-		int start_nexus = size * (size - 1) + 1;
-		int hero_loc = getCharacterPosition();
-		return ((hero_loc - 1) % size + start_nexus);
+	public void back(LNMGameLayout map){
+		this.setCharacterPosition(this.getHeroNexus());
 	}
 
 	public int teleport(LNMGameLayout map, Scanner scanner, List<Monster> mst, List<Hero> hero) {
@@ -606,6 +604,16 @@ public class Hero extends GameCharacter{
 	//set hero attributes on lose
 	public void heroLost() {
 		this.setMoney(this.getMoney()/2);		
+	}
+
+
+	public int getHeroNexus() {
+		return heroNexus;
+	}
+
+
+	public void setHeroNexus(int heroNexus) {
+		this.heroNexus = heroNexus;
 	}
 		
 }
