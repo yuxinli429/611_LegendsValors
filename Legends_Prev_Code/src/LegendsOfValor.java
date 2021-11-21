@@ -30,9 +30,19 @@ public class LegendsOfValor extends RolePlayGame{
 		FileToList filereader = new FileToList();
 		LNMGameLayout lnmgameLayout = initializegame(scanner);
 		System.out.println("Welcome to the village!!");
-		//play till the game is end or ended by user
+		//play till the game is ended by user
 		HeroNexus market = new HeroNexus(filereader);
+		int gameRounds = 0;
 		while(true) {
+			//After 8 rounds of game new monsters spawn
+			if(gameRounds%8 == 0) {
+				MonsterNexus monsterNexus = new MonsterNexus(allMonsters,gameHeroes);
+				List<Monster> newMonsters = new ArrayList<Monster>();
+				newMonsters = monsterNexus.createMonsters(GameConfig);
+				for(Monster monster:newMonsters) {
+					gameMonsters.add(monster);
+				}
+			}
 			for(int i=0;i<gameHeroes.size();i++) {
 				if(lnmgameLayout.getGameCells().get(gameHeroes.get(i).getCharacterPosition()-1) == CellType.HERONEXUS.getCellTypeNumber())
 					lnmgameLayout.drawLNMLayout(true,false,gameHeroes,gameMonsters);
@@ -41,8 +51,6 @@ public class LegendsOfValor extends RolePlayGame{
 				boolean isValid = false;
 				int nextPosition = 0;
 				do {
-					//nextPosition = gameHeroes.get(i).getCharacterPosition();
-					//checkCell(scanner, lnmgameLayout, market, nextPosition,gameHeroes.get(i));
 					System.out.println("H"+String.valueOf(i+1)+": " + gameHeroes.get(i).getName());
 					//check for the input from user to move around the board
 					String input = GameFunctions.safeScanChar(scanner, "Please enter the input: ");
@@ -56,12 +64,16 @@ public class LegendsOfValor extends RolePlayGame{
 						isValid =true;
 					}
 				} while ((!isValid));
-				//HeroNexus market = new HeroNexus(filereader);
-				//once the heroparty move is valid and moved, check for the type of the cell
-				//checkCell(scanner, lnmgameLayout, market, nextPosition,gameHeroes.get(i));
-				System.out.println(gameMonsters.get(i).getCharacterSymbol()+", "+gameMonsters.get(i).getName()+" made a move");
-				gameMonsters.get(i).MoveMonster(lnmgameLayout);
+				//at the end of each round hero gain 10% of HP and Mana
+				gameHeroes.get(i).setHealthPower(gameHeroes.get(i).getHealthPower()*1.1);
+				gameHeroes.get(i).setMana(gameHeroes.get(i).getMana()*1.1);
+				//all the monsters in the lane move after hero's move
+				for(int j=i;j<gameMonsters.size();j=j+3) {
+					System.out.println(gameMonsters.get(j).getCharacterSymbol()+", "+gameMonsters.get(i).getName()+" made a move");
+					gameMonsters.get(j).MoveMonster(lnmgameLayout);
+				}
 			}
+			gameRounds++;//keeping the count of game rounds
 		}
 			
 	}
@@ -99,7 +111,12 @@ public class LegendsOfValor extends RolePlayGame{
 				isValidLane = true;
 		}
 		else if(GameConstants.LNM_TELEPORT_KEY.equalsIgnoreCase(nextPosition)) {
-			hero.teleport(lnmgameLayout, scanner, allMonsters, gameHeroes);
+			nextPostn = hero.teleport(lnmgameLayout, scanner, allMonsters, gameHeroes);
+			if(nextPostn == hero.getCharacterPosition()) {
+				return -10;
+			} else {
+				isValidLane = true;
+			}
 		}
 		else if(GameConstants.LNM_MARKET_KEY.equalsIgnoreCase(nextPosition)) {
 			nextPostn = -20;
@@ -125,6 +142,7 @@ public class LegendsOfValor extends RolePlayGame{
 			return 0;		
 	}
 	
+	//Function to check each cell and do respective actions
 	public void checkCell(Scanner scanner,LNMGameLayout lnmgameLayout,HeroNexus market,int nextPosition,Hero hero) {
 		List<Integer> gameCells = lnmgameLayout.getGameCells();
 		//if cell is nexus ask user if he would like to sell/buy modified not to check whether he would like to enter since it would give Hero chance to move twice
@@ -149,16 +167,12 @@ public class LegendsOfValor extends RolePlayGame{
 		//Check for inaccessible cell
 		else if(gameCells.get(nextPosition-1)== CellType.INACCESSIBLECELL.getCellTypeNumber()) {
 			InaccessibleCell cell = new InaccessibleCell();
-			cell.moveToCell(hero);
-			//lnmgameLayout.drawLNMLayout(false,true,gameHeroes,gameMonsters);
-			//String input = GameFunctions.safeScanChar(scanner, hero.getCharacterSymbol()+", Please enter the input: ");
-			//nextPosition = moveHeroParty(input,scanner,hero);
-			//checkCell(scanner,lnmgameLayout, market, nextPosition,hero);			
+			cell.moveToCell(hero);			
 		}
 		//check for common place. Hero gains the special abilities in each cell inside the each cell class
 		else {
 			hero.setCharacterPosition(nextPosition);
-			//hero.attackInRange(gameMonsters, lnmgameLayout, scanner);
+			hero.attackInRange(gameMonsters, lnmgameLayout, scanner);
 		}
 	}
 	
@@ -178,8 +192,8 @@ public class LegendsOfValor extends RolePlayGame{
 		//Creation of all the monsters from reading to mapping is taken care in Monsters class
 		Monsters monsters = new Monsters();
 		allMonsters = monsters.createMonsterList(readFile);
-		MonsterNexus monsterNexus = new MonsterNexus(allMonsters,gameHeroes);
-		gameMonsters = monsterNexus.createMonsters(GameConfig);
+		//MonsterNexus monsterNexus = new MonsterNexus(allMonsters,gameHeroes);
+		//gameMonsters = monsterNexus.createMonsters(GameConfig);
 		return lnmgameLayout;		
 	}
 
