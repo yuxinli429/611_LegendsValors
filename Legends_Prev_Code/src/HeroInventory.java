@@ -90,7 +90,7 @@ public class HeroInventory {
 		for(int i =0; i<potionsList.size();i++) {
 			details.add(potionsList.get(i).getDetails());
 		}
-		details.forEach(System.out::println);
+		//details.forEach(System.out::println);
 		GameDesigns.tableWithLines(details, true);		
 	}
 	

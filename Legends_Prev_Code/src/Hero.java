@@ -20,13 +20,13 @@ public class Hero extends GameCharacter{
 	private double dexterity;
 	private double strength;
 	private double agility;
-	private int heroLocation;
 	private HeroInventory heroInventory;
 	private double damage;
 	private Weapon heroWeapon;
 	private Armor heroArmor;
 	private int damageReduction;
 	private int heroNexus;
+	private String attributeChanged;
 	
 	//Creates inventory of the hero when hero is created
 	public Hero() {
@@ -93,13 +93,6 @@ public class Hero extends GameCharacter{
 		this.agility = agility;
 	}
 
-	public int getHeroLocation() {
-		return heroLocation;
-	}
-
-	public void setHeroLocation(int heroLocation) {
-		this.heroLocation = heroLocation;
-	}
 	
 	//mapper to create Hero object rather than using new
 	public void mapObject(List<String> heroList, String heroSymbol) {
@@ -312,7 +305,7 @@ public class Hero extends GameCharacter{
 			index++;
 		}
 		msg += ")";
-		while(true) {
+		while(true) {//need to change since it is going in loop
 			System.out.println(msg);
 			boolean inp_valid = false;
 			String inp = "";
@@ -563,25 +556,22 @@ public class Hero extends GameCharacter{
 		heroDetails2.add(String.valueOf(this.getGameLevel()));
 		ArrayList<String> heroDetails3 = new ArrayList<String>();
 		heroDetails3.add("HP");
-		df.format(this.getHealthPower());
-		heroDetails3.add(String.valueOf(this.getHealthPower()));
+		heroDetails3.add(String.valueOf(df.format(this.getHealthPower())));
 		ArrayList<String> heroDetails4 = new ArrayList<String>();
 		heroDetails4.add("MANA");
-		df.format(this.getMana());
-		heroDetails4.add(String.valueOf(this.getMana()));
+		heroDetails4.add(String.valueOf(df.format(this.getMana())));
 		ArrayList<String> heroDetails5 = new ArrayList<String>();
 		heroDetails5.add("Experience");
-		df.format(this.getExperince());
-		heroDetails5.add(String.valueOf(this.getExperince()));
+		heroDetails5.add(String.valueOf(df.format(this.getExperince())));
 		ArrayList<String> heroDetails6 = new ArrayList<String>();
 		heroDetails6.add("Dexerity");
-		heroDetails6.add(String.valueOf(this.getDexterity()));
+		heroDetails6.add(String.valueOf(df.format(this.getDexterity())));
 		ArrayList<String> heroDetails7 = new ArrayList<String>();
 		heroDetails7.add("Agiity");
-		heroDetails7.add(String.valueOf(this.getAgility()));
+		heroDetails7.add(String.valueOf(df.format(this.getAgility())));
 		ArrayList<String> heroDetails8 = new ArrayList<String>();
 		heroDetails8.add("Strength");
-		heroDetails8.add(String.valueOf(this.getStrength()));
+		heroDetails8.add(String.valueOf(df.format(this.getStrength())));
 		heroDetails.add(heroDetails1);
 		heroDetails.add(heroDetails2);
 		heroDetails.add(heroDetails3);
@@ -599,11 +589,13 @@ public class Hero extends GameCharacter{
 		this.setExperince(this.getExperince()+2);
 		this.setMoney(this.getMoney()+(monster.getGameLevel()*100));
 		this.displayInfo();
+		monster.setCharacterPosition(-100);
 	}
 	
 	//set hero attributes on lose
 	public void heroLost() {
-		this.setMoney(this.getMoney()/2);		
+		this.setMoney(this.getMoney()/2);
+		this.setCharacterPosition(this.getHeroNexus());
 	}
 
 
@@ -614,6 +606,25 @@ public class Hero extends GameCharacter{
 
 	public void setHeroNexus(int heroNexus) {
 		this.heroNexus = heroNexus;
+	}
+
+
+	public String getAttributeChanged() {
+		return attributeChanged;
+	}
+
+
+	public void setAttributeChanged(String attributeChanged) {
+		this.attributeChanged = attributeChanged;
+	}
+	
+	public void resetSkills() {
+		if(this.getAttributeChanged() == HeroSkill.AGILITY.getHeroSkillName())
+			this.setAgility(this.getAgility()/1.1);
+		else if(this.getAttributeChanged() == HeroSkill.DEXTERITY.getHeroSkillName())
+			this.setDexterity(this.getDexterity()/1.1);
+		else if(this.getAttributeChanged() == HeroSkill.STRENGTH.getHeroSkillName())
+			this.setStrength(this.getStrength()/1.1);
 	}
 		
 }

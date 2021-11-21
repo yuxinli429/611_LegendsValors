@@ -18,6 +18,24 @@ public class LegendsOfValor extends RolePlayGame{
 		return "Legends of Valor";
 	}
 	
+	//function to initialize the game with 
+	public LNMGameLayout initializegame(Scanner scanner) {
+		gameHeroes = new ArrayList<Hero>();
+		gameMonsters = new ArrayList<Monster>();
+		allMonsters = new ArrayList<Monster>();
+		this.GameConfig.setTeamSize(GameConstants.LNM_PLAYER_COUNT_MAX);
+        this.GameConfig.setGameSize(GameConstants.LNM_LAYOUT_SIZE);
+        FileToList readFile = new FileToList();//Parser created and used for all classes
+        LNMGameLayout lnmgameLayout = new LNMGameLayout(GameConfig);//Game layout created at the beginning of the game
+        Heroes heroTeam = new Heroes(GameConfig);
+        heroTeam.readInputs(scanner, readFile,GameConfig);
+        gameHeroes = heroTeam.getSelectedHeroes();
+		//Creation of all the monsters from reading to mapping is taken care in Monsters class
+		Monsters monsters = new Monsters();
+		allMonsters = monsters.createMonsterList(readFile);
+		return lnmgameLayout;		
+	}
+	
 
 	@Override
 	public void startGame() {
@@ -34,7 +52,7 @@ public class LegendsOfValor extends RolePlayGame{
 		HeroNexus market = new HeroNexus(filereader);
 		int gameRounds = 0;
 		while(true) {
-			//After 8 rounds of game new monsters spawn
+			//After every 8 rounds spawn new monsters
 			if(gameRounds%8 == 0) {
 				MonsterNexus monsterNexus = new MonsterNexus(allMonsters,gameHeroes);
 				List<Monster> newMonsters = new ArrayList<Monster>();
@@ -60,6 +78,7 @@ public class LegendsOfValor extends RolePlayGame{
 					else if(nextPosition == -10)
 						continue;
 					else {
+						gameHeroes.get(i).resetSkills();//reset skill whenever hero moves to a different cell
 						checkCell(scanner, lnmgameLayout, market, nextPosition,gameHeroes.get(i));
 						isValid =true;
 					}
@@ -176,30 +195,28 @@ public class LegendsOfValor extends RolePlayGame{
 		}
 		//check for common place. Hero gains the special abilities in each cell inside the each cell class
 		else {
-			hero.setCharacterPosition(nextPosition);
-			//hero.attackInRange(gameMonsters, lnmgameLayout, scanner);
+			checkCommonCells(nextPosition, hero, gameCells);
+			hero.attackInRange(gameMonsters, lnmgameLayout, scanner);
 		}
 	}
-	
-	
-	//function to initialize the game with 
-	public LNMGameLayout initializegame(Scanner scanner) {
-		gameHeroes = new ArrayList<Hero>();
-		gameMonsters = new ArrayList<Monster>();
-		allMonsters = new ArrayList<Monster>();
-		this.GameConfig.setTeamSize(GameConstants.LNM_PLAYER_COUNT_MAX);
-        this.GameConfig.setGameSize(GameConstants.LNM_LAYOUT_SIZE);
-        FileToList readFile = new FileToList();//Parser created and used for all classes
-        LNMGameLayout lnmgameLayout = new LNMGameLayout(GameConfig);//Game layout created at the beginning of the game
-        Heroes heroTeam = new Heroes(GameConfig);
-        heroTeam.readInputs(scanner, readFile,GameConfig);
-        gameHeroes = heroTeam.getSelectedHeroes();
-		//Creation of all the monsters from reading to mapping is taken care in Monsters class
-		Monsters monsters = new Monsters();
-		allMonsters = monsters.createMonsterList(readFile);
-		//MonsterNexus monsterNexus = new MonsterNexus(allMonsters,gameHeroes);
-		//gameMonsters = monsterNexus.createMonsters(GameConfig);
-		return lnmgameLayout;		
+
+	//Function to check if cells provide any special abilities
+	private void checkCommonCells(int nextPosition, Hero hero, List<Integer> gameCells) {
+		if(gameCells.get(nextPosition-1)== CellType.BUSH.getCellTypeNumber()) {
+			BushCell bushCell = new BushCell();
+			bushCell.addSpecialAbility(hero);
+		}
+		else if(gameCells.get(nextPosition-1)== CellType.CAVE.getCellTypeNumber()) {
+			CaveCell caveCell = new CaveCell();
+			caveCell.addSpecialAbility(hero);
+		}
+		else if(gameCells.get(nextPosition-1)== CellType.KOULOU.getCellTypeNumber()) {
+			KoulouCell koulouCell = new KoulouCell();
+			koulouCell.addSpecialAbility(hero);
+		}
+		hero.setCharacterPosition(nextPosition);
 	}
+	
+	
 
 }
