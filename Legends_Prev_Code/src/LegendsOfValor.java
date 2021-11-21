@@ -108,6 +108,7 @@ public class LegendsOfValor extends RolePlayGame{
 			if(gameMonsters.get(j).getCharacterPosition()>0 && gameMonsters.get(j).getCharacterPosition()<this.GameConfig.getGameSize()*this.GameConfig.getGameSize()) {
 				System.out.println(gameMonsters.get(j).getCharacterSymbol()+", "+gameMonsters.get(i).getName()+" made a move");
 				gameMonsters.get(j).MoveMonster(lnmgameLayout);
+				lnmgameLayout.drawLNMLayout(false,true,gameHeroes,gameMonsters);
 				gameHeroes.get(i).attackInRange(gameMonsters, lnmgameLayout, scanner);
 			}					
 		}
@@ -216,6 +217,7 @@ public class LegendsOfValor extends RolePlayGame{
 		//check for common place. Hero gains the special abilities in each cell inside the each cell class
 		else {
 			checkCommonCells(nextPosition, hero, gameCells);
+			lnmgameLayout.drawLNMLayout(false,true,gameHeroes,gameMonsters);
 			hero.attackInRange(gameMonsters, lnmgameLayout, scanner);
 		}
 	}

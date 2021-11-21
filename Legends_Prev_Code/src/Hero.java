@@ -320,7 +320,7 @@ public class Hero extends GameCharacter{
 			}
 		}
 		if(target.isEmpty()) {
-			System.out.println("No monsters in your range of attack.");
+			//System.out.println("No monsters in your range of attack.");
 			return false;
 		}
 		String msg = "Please enter the position of monsters around the hero to select a target to attack.\n";
