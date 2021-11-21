@@ -112,22 +112,14 @@ public class LegendsOfValor extends RolePlayGame{
 				continue;
 			else {
 				gameHeroes.get(i).resetSkills();//reset skill whenever hero moves to a different cell
-				checkCell(scanner, lnmgameLayout, market, nextPosition,gameHeroes.get(i));
-				isValid =true;
+				boolean isValidcell = checkCell(scanner, lnmgameLayout, market, nextPosition,gameHeroes.get(i));
+				if(isValidcell)
+					isValid =true;
 			}
 		} while ((!isValid));
 		//at the end of each round hero gain 10% of HP and Mana
 		gameHeroes.get(i).setHealthPower(gameHeroes.get(i).getHealthPower()*1.1);
 		gameHeroes.get(i).setMana(gameHeroes.get(i).getMana()*1.1);
-		//all the monsters in the lane move after hero's move
-		/*for(int j=i;j<gameMonsters.size();j=j+3) {
-			if(gameMonsters.get(j).getCharacterPosition()>0 && gameMonsters.get(j).getCharacterPosition()<this.GameConfig.getGameSize()*this.GameConfig.getGameSize()) {
-				System.out.println(gameMonsters.get(j).getCharacterSymbol()+", "+gameMonsters.get(i).getName()+" made a move");
-				gameMonsters.get(j).MoveMonster(lnmgameLayout);
-				lnmgameLayout.drawLNMLayout(false,true,gameHeroes,gameMonsters);
-				gameHeroes.get(i).attackInRange(gameMonsters, lnmgameLayout, scanner);
-			}					
-		}*/
 	}
 	
 	//function to check for user inputs and validity of movement in the map
@@ -204,7 +196,7 @@ public class LegendsOfValor extends RolePlayGame{
 	}
 	
 	//Function to check each cell and do respective actions
-	public void checkCell(Scanner scanner,LNMGameLayout lnmgameLayout,HeroNexus market,int nextPosition,Hero hero) {
+	public boolean checkCell(Scanner scanner,LNMGameLayout lnmgameLayout,HeroNexus market,int nextPosition,Hero hero) {
 		List<Integer> gameCells = lnmgameLayout.getGameCells();
 		//if cell is nexus ask user if he would like to sell/buy modified not to check whether he would like to enter since it would give Hero chance to move twice
 		if(gameCells.get(nextPosition-1)== CellType.HERONEXUS.getCellTypeNumber()) {
@@ -225,17 +217,20 @@ public class LegendsOfValor extends RolePlayGame{
 					isDone = true;
 				}
 			}
+			return true;
 		}
 		//Check for inaccessible cell
 		else if(gameCells.get(nextPosition-1)== CellType.INACCESSIBLECELL.getCellTypeNumber()) {
 			InaccessibleCell cell = new InaccessibleCell();
-			cell.moveToCell(hero);			
+			cell.moveToCell(hero);	
+			return false;
 		}
 		//check for common place. Hero gains the special abilities in each cell inside the each cell class
 		else {
 			checkCommonCells(nextPosition, hero, gameCells);
 			lnmgameLayout.drawLNMLayout(false,true,gameHeroes,gameMonsters);
 			hero.attackInRange(gameMonsters, lnmgameLayout, scanner);
+			return true;
 		}
 	}
 
