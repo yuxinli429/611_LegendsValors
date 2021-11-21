@@ -10,7 +10,7 @@ public class Monster extends GameCharacter{
 	private double damage;
 	private int defence;
 	private int dodgeChance;
-	private int position;
+	//private int position;
 	private boolean hasWon;
 
 	public Monster(){
@@ -53,13 +53,6 @@ public class Monster extends GameCharacter{
 		this.dodgeChance = dodgeChance;
 	}
 
-	public void setPosition(int position){
-		this.position = position;
-	}
-
-	public int getPosition() {
-		return position;
-	}
 	//mapper function for the Dragon class
 	public void mapObject(ArrayList<String> monsterList) {
 		this.setName(monsterList.get(0));
@@ -81,45 +74,39 @@ public class Monster extends GameCharacter{
 		System.out.println(this.getName()+" caused "+damagecaused+" to"+hero.getName());
 	}
 	//check monster.hasWon every time after move monster
-	public void MoveMonster(LegendsMonsterAndHeroes game, LNMGameLayout lnmgameLayout){
+	public void MoveMonster(LNMGameLayout lnmgameLayout){
 		int next = 0;
 		while(next == 0){
-			next = MakeMove(game);
+			next = MakeMove(lnmgameLayout);
 		}
-		CheckMonsterMove(next, lnmgameLayout, game);
 	}
-	public int MakeMove(LegendsMonsterAndHeroes game){
-		int current = this.getPosition();
+	public int MakeMove(LNMGameLayout lnmgameLayout){
+		int current = this.getCharacterPosition();
 		int next = current;
-		int length = game.GameConfig.getGameSize();
-		//monster can't move back
-		//0 -- forward
-		//1 -- left
-		//2 -- right
-
-		//condition check? if there is a hero on the same row then monster cannot move
-		//directly access cell?
+		int length = lnmgameLayout.getGameSize();
 		next = current + length;
-		this.setPosition(next);
-
-		if((next >0 && next <=(length*length)))
+		if(next<length*length && next>0 && CheckMonsterMove(next,lnmgameLayout) == true){
 			return next;
-		else
-			return 0;
+		}
+		else return 0;
+		
 	}
-	public void CheckMonsterMove(int position, LNMGameLayout lnmgameLayout, LegendsMonsterAndHeroes game) {
+	
+	public boolean CheckMonsterMove(int position, LNMGameLayout lnmgameLayout) {
 		List<Integer> gameCells = lnmgameLayout.getGameCells();
 		if (gameCells.get(position - 1) == CellType.INACCESSIBLECELL.getCellTypeNumber()) {
 			//if the cell is inaccessible, go over again
-			position = MakeMove(game);
-			CheckMonsterMove(position, lnmgameLayout, game);
+			return false;
 		}
 		else if(gameCells.get(position - 1) == CellType.HERONEXUS.getCellTypeNumber()){
 			this.hasWon = true;
-			lnmgameLayout.setGameStartPosition(position);
+			this.setCharacterPosition(position);
+			System.out.println(this.getCharacterSymbol()+", "+this.getName()+" reached Hero Nexus and won!!");
+			return true;
 		}
 		else{
-			lnmgameLayout.setGameStartPosition(position);
+			this.setCharacterPosition(position);
+			return true;
 		}
 	}
 

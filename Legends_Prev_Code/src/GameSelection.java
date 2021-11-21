@@ -6,7 +6,7 @@ public class GameSelection {
 	
 	public GameSelection() {
         games = new Game[2];
-        games[0] = new LegendsMonsterAndHeroes();
+        games[0] = new LegendsOfValor();
     }
 	
 	public void startGame() {

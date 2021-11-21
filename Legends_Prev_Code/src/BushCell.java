@@ -7,4 +7,5 @@ public class BushCell extends CommonPlace implements isSpecial{
 		
 	}
 
+
 }

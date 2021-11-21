@@ -16,10 +16,10 @@ public class Heroes {
 		selectedHeroes = new ArrayList<Hero>();
 		ArrayList<ArrayList<String>> heroesList = new ArrayList<ArrayList<String>>();
 		heroesList = displayHeroes(readFile);
-		System.out.println("Game will be played by 3 heroes!!");
+		System.out.println("Selection of the heroes");
 		for(int i=0;i<this.getHeroPartySize();i++){
 			String heroSymbol = "H"+String.valueOf(i+1);
-            int heroNumber = GameFunctions.safeScanIntWithLimit(scanner,"Please enter the number corresponding to the hero you would like to choose: ", 1,heroesList.size()-1);
+            int heroNumber = GameFunctions.safeScanIntWithLimit(scanner,"Please enter the number corresponding to the hero you would like to choose as H"+String.valueOf(i+1)+": ", 1,heroesList.size()-1);
             scanner.nextLine();
             if(heroesList.get(heroNumber).get(7) == "Paladin") {
             	Paladin gameHero = new Paladin();

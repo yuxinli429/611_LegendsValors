@@ -173,11 +173,29 @@ public class GameFunctions {
         return retValue;
     }
     
-    //Created a function to check the cellnumber of matrix
-    public static int ij_to_int(int row, int column, int boardlen)
-	{
-		int a = (boardlen*row)+column;			
-		return a;		
-	}
+  //Function to convert integer to array
+  	public static int[] int_to_ij(int cellnum, int boardlen)
+  	{
+  		int[] arr = new int[2];
+  		arr[1] = cellnum%boardlen;
+  		if(arr[1] == 0)
+  		{
+  			arr[1]=boardlen-1;
+  			arr[0]=(cellnum/boardlen)-1;
+  		}
+  		else
+  		{
+  			arr[1] = (cellnum%boardlen)-1;
+  			arr[0] = cellnum/boardlen;
+  		}		
+  		return arr;		
+  	}
+  	
+  	public static int ij_to_int(int row, int column, int boardlen)
+  	{
+  		int a = (boardlen*row)+column;			
+  		return a;		
+  	}
+  	
 
 }

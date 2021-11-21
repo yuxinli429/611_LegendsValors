@@ -47,7 +47,7 @@ public class HeroNexus extends NexusCell{
 	}		
 
 	@Override
-	public void moveToCell(Scanner scanner,LNMGameLayout lnmgameLayout) {
+	public void moveToCell(Hero hero) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -84,32 +84,23 @@ public class HeroNexus extends NexusCell{
 		this.armors = armors;
 	}
 	
-	public void sellInventory(List<Hero> heroList, Scanner scanner) {
-		
-		for(int i=0; i<heroList.size();i++) {
-			boolean isDone = false;
-			while(!isDone) {
-				int inventoryTypeOption = GameFunctions.safeScanIntWithLimit(scanner,heroList.get(i).getName()+", Please enter the number you would like to buy/perform at the maket:\n1.Potions\n2.Spell\n3.Weapons\n4.Armor\n5.Exit HeroNexus\n6.Choose for Next Hero\nInput: ", 1,6);
-				scanner.nextLine();	
-				if(inventoryTypeOption==1)
-					sellPotion(scanner,heroList.get(i));
-				else if(inventoryTypeOption==2)
-					sellSpells(scanner,heroList.get(i));
-				else if(inventoryTypeOption==3)
-					sellWeapons(scanner,heroList.get(i));
-				else if(inventoryTypeOption==4)
-					sellArmor(scanner,heroList.get(i));
-				else if(inventoryTypeOption==5)
-					return;
-				else if(inventoryTypeOption==6) {
-					if(i+1>heroList.size()) {
-						System.out.println("No more heroes");
-					}
-					isDone = true;
-				}
-			}
-				
+	public void sellInventory(Hero hero, Scanner scanner) {		
+		boolean isDone = false;
+		while(!isDone) {
+			int inventoryTypeOption = GameFunctions.safeScanIntWithLimit(scanner,hero.getName()+", Please enter the number you would like to buy/perform at the maket:\n1.Potions\n2.Spell\n3.Weapons\n4.Armor\n5.Exit Menu\nInput: ", 1,5);
+			scanner.nextLine();	
+			if(inventoryTypeOption==1)
+				sellPotion(scanner,hero);
+			else if(inventoryTypeOption==2)
+				sellSpells(scanner,hero);
+			else if(inventoryTypeOption==3)
+				sellWeapons(scanner,hero);
+			else if(inventoryTypeOption==4)
+				sellArmor(scanner,hero);
+			else if(inventoryTypeOption==5)
+				isDone = true;
 		}
+
 	}
 	
 	public void sellPotion(Scanner scanner,Hero hero) {

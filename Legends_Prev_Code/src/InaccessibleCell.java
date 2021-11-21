@@ -15,7 +15,7 @@ public class InaccessibleCell extends Cell{
 	
 	//function to restrict movement to this cell
 	@Override
-	public void moveToCell(Scanner scanner,LNMGameLayout lnmgameLayout) {
+	public void moveToCell(Hero hero) {
 		// TODO Auto-generated method stub
 		System.out.println("Move not allowed. Please go to a different place.");
 		

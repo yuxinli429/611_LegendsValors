@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.Scanner;
 
 
-//LegendsMonsterAndHeroes class has the logic for actual game start
-public class LegendsMonsterAndHeroes extends RolePlayGame{	
+//LegendsOfValor class has the logic for actual game start
+public class LegendsOfValor extends RolePlayGame{	
 
 	private List<Hero> gameHeroes;
 	private List<Monster> gameMonsters;
@@ -15,7 +15,7 @@ public class LegendsMonsterAndHeroes extends RolePlayGame{
 	@Override
 	public String getName() {
 		// TODO Auto-generated method stub
-		return "Legends: Monster And Heroes";
+		return "Legends of Valor";
 	}
 	
 
@@ -25,61 +25,88 @@ public class LegendsMonsterAndHeroes extends RolePlayGame{
 		System.out.println();
 		GameDesigns.displayMonsterDesign();
 		System.out.println();
-		System.out.println("Let's play "+getName()+"!!");
+		System.out.println("Let's play "+getName()+"!!\n");
 		Scanner scanner = new Scanner(System.in);
 		FileToList filereader = new FileToList();
 		LNMGameLayout lnmgameLayout = initializegame(scanner);
 		System.out.println("Welcome to the village!!");
 		//play till the game is end or ended by user
+		HeroNexus market = new HeroNexus(filereader);
 		while(true) {
-			lnmgameLayout.drawLNMLayout(false,true,gameHeroes,gameMonsters);
 			for(int i=0;i<gameHeroes.size();i++) {
+				if(lnmgameLayout.getGameCells().get(gameHeroes.get(i).getCharacterPosition()-1) == CellType.HERONEXUS.getCellTypeNumber())
+					lnmgameLayout.drawLNMLayout(true,false,gameHeroes,gameMonsters);
+				else
+					lnmgameLayout.drawLNMLayout(false,true,gameHeroes,gameMonsters);
 				boolean isValid = false;
 				int nextPosition = 0;
 				do {
+					//nextPosition = gameHeroes.get(i).getCharacterPosition();
+					//checkCell(scanner, lnmgameLayout, market, nextPosition,gameHeroes.get(i));
 					System.out.println("H"+String.valueOf(i+1)+": " + gameHeroes.get(i).getName());
 					//check for the input from user to move around the board
 					String input = GameFunctions.safeScanChar(scanner, "Please enter the input: ");
-					nextPosition = moveHeroParty(lnmgameLayout, input, scanner);
+					nextPosition = moveHeroParty(lnmgameLayout,input, scanner,gameHeroes.get(i));
 					if (nextPosition == 0)
 						System.out.println("Invalid move");
-					else
-						isValid = true;
+					else if(nextPosition == -10)
+						continue;
+					else {
+						checkCell(scanner, lnmgameLayout, market, nextPosition,gameHeroes.get(i));
+						isValid =true;
+					}
 				} while ((!isValid));
-				HeroNexus market = new HeroNexus(filereader);
+				//HeroNexus market = new HeroNexus(filereader);
 				//once the heroparty move is valid and moved, check for the type of the cell
-				checkCell(scanner, lnmgameLayout, market, nextPosition);
+				//checkCell(scanner, lnmgameLayout, market, nextPosition,gameHeroes.get(i));
+				System.out.println(gameMonsters.get(i).getCharacterSymbol()+", "+gameMonsters.get(i).getName()+" made a move");
+				gameMonsters.get(i).MoveMonster(lnmgameLayout);
 			}
 		}
 			
 	}
 	
 	//function to check for user inputs and validity of movement in the map
-	public int moveHeroParty(LNMGameLayout lnmgameLayout, String nextPosition, Scanner scanner) {
-		int currentPosition = lnmgameLayout.getGameStartPosition();
+	public int moveHeroParty(LNMGameLayout lnmgameLayout,String nextPosition, Scanner scanner, Hero hero) {
+		int currentPosition = hero.getCharacterPosition();
 		int nextPostn = currentPosition;
+		boolean isValidLane = false;
+		boolean checkInfo = false;
 		if(GameConstants.LNM_UP_KEY.equalsIgnoreCase(nextPosition)) {
 			nextPostn = currentPosition-this.GameConfig.getGameSize();
+			isValidLane = true;
 		}
 		else if(GameConstants.LNM_DOWN_KEY.equalsIgnoreCase(nextPosition)) {
 			nextPostn = currentPosition+this.GameConfig.getGameSize();
+			isValidLane = true;
 		}
 		else if(GameConstants.LNM_RIGHT_KEY.equalsIgnoreCase(nextPosition)) {
 			nextPostn = currentPosition+1;
+			int[] arr1 = new int[2];
+			int[] arr2 = new int[2];
+			arr1 = GameFunctions.int_to_ij(currentPosition, this.GameConfig.getGameSize());
+			arr2 = GameFunctions.int_to_ij(nextPostn, this.GameConfig.getGameSize());
+			if(arr1[0] == arr2[0])
+				isValidLane = true;
 		}
 		else if(GameConstants.LNM_LEFT_KEY.equalsIgnoreCase(nextPosition)) {
 			nextPostn = currentPosition-1;
+			int[] arr1 = new int[2];
+			int[] arr2 = new int[2];
+			arr1 = GameFunctions.int_to_ij(currentPosition, this.GameConfig.getGameSize());
+			arr2 = GameFunctions.int_to_ij(nextPostn, this.GameConfig.getGameSize());
+			if(arr1[0] == arr2[0])
+				isValidLane = true;
 		}
 		else if(GameConstants.LNM_TELEPORT_KEY.equalsIgnoreCase(nextPosition)) {
-			nextPostn = currentPosition-1;
+			hero.teleport(lnmgameLayout, scanner, allMonsters, gameHeroes);
 		}
 		else if(GameConstants.LNM_MARKET_KEY.equalsIgnoreCase(nextPosition)) {
 			nextPostn = -20;
 		}
 		else if(GameConstants.LNM_INFO_KEY.equalsIgnoreCase(nextPosition)) {
-			for(Hero hero:gameHeroes) {
 				hero.displayInfo();
-			}
+				checkInfo = true;
 			//return currentPosition;
 		}
 		else if(GameConstants.LNM_QUIT_KEY.equalsIgnoreCase(nextPosition)) {
@@ -87,54 +114,51 @@ public class LegendsMonsterAndHeroes extends RolePlayGame{
 			System.exit(0);
 		}
 		else if(GameConstants.LNM_INVENTORY_KEY.equalsIgnoreCase(nextPosition)) {
-			for(Hero hero:gameHeroes) {
 				hero.checkInventory(scanner);
-			}
+				isValidLane = true;
 		}		
-		if((nextPostn>0 && nextPostn<=(this.GameConfig.getGameSize()*this.GameConfig.getGameSize())) || nextPostn == -20)
+		if((nextPostn>0 && nextPostn<=(this.GameConfig.getGameSize()*this.GameConfig.getGameSize()) && isValidLane == true) || nextPostn == -20)
 			return nextPostn;
+		else if(checkInfo == true)
+			return -10;
 		else
 			return 0;		
 	}
 	
-	public void checkCell(Scanner scanner,LNMGameLayout lnmgameLayout,HeroNexus market,int nextPosition) {
+	public void checkCell(Scanner scanner,LNMGameLayout lnmgameLayout,HeroNexus market,int nextPosition,Hero hero) {
 		List<Integer> gameCells = lnmgameLayout.getGameCells();
-		//if cell is market ask user if he would like to enter or continue game
+		//if cell is nexus ask user if he would like to sell/buy modified not to check whether he would like to enter since it would give Hero chance to move twice
 		if(gameCells.get(nextPosition-1)== CellType.HERONEXUS.getCellTypeNumber()) {
-			lnmgameLayout.setGameStartPosition(nextPosition);
-			System.out.println("You are in the market place!!");
-			lnmgameLayout.drawLNMLayout(true,false,gameHeroes,gameMonsters);
-			String input = GameFunctions.safeScanChar(scanner, "Please enter the input: ");
-			nextPosition = moveHeroParty(lnmgameLayout,input,scanner);
-			if(nextPosition == -20) {
-				int marketOption = GameFunctions.safeScanIntWithLimit(scanner,"Please enter the number you would like to perform at the maket:\n1.Buy\n2.Sell\nInput: ", 1,2);
+			hero.setCharacterPosition(nextPosition);
+			System.out.println(hero.getCharacterSymbol()+", You are in the nexus!!");
+			boolean isDone = false;
+			while(!isDone) {
+				int marketOption = GameFunctions.safeScanIntWithLimit(scanner,"Please enter the number you would like to perform at the nexus:\n1.Buy\n2.Sell\n3.Done\nInput: ", 1,3);
 				scanner.nextLine();
 				if(marketOption == 1) {
-					market.sellInventory(gameHeroes, scanner);
+					market.sellInventory(hero, scanner);
+				}
+				else if(marketOption == 2){
+					hero.sellHeroInventory(scanner);
 				}
 				else {
-					for(int i=0;i<gameHeroes.size();i++) {
-						gameHeroes.get(i).sellHeroInventory(scanner);
-					}
-				}				
+					isDone = true;
+				}
 			}
-			else
-				checkCell(scanner,lnmgameLayout, market, nextPosition);
 		}
 		//Check for inaccessible cell
 		else if(gameCells.get(nextPosition-1)== CellType.INACCESSIBLECELL.getCellTypeNumber()) {
 			InaccessibleCell cell = new InaccessibleCell();
-			cell.moveToCell(scanner,lnmgameLayout);
-			lnmgameLayout.drawLNMLayout(false,true,gameHeroes,gameMonsters);
-			String input = GameFunctions.safeScanChar(scanner, "Please enter the input: ");
-			nextPosition = moveHeroParty(lnmgameLayout,input,scanner);
-			checkCell(scanner,lnmgameLayout, market, nextPosition);			
+			cell.moveToCell(hero);
+			//lnmgameLayout.drawLNMLayout(false,true,gameHeroes,gameMonsters);
+			//String input = GameFunctions.safeScanChar(scanner, hero.getCharacterSymbol()+", Please enter the input: ");
+			//nextPosition = moveHeroParty(input,scanner,hero);
+			//checkCell(scanner,lnmgameLayout, market, nextPosition,hero);			
 		}
-		//check for common place. All the game logic is inside class since monsters are not created at the beginning
-		else if(gameCells.get(nextPosition-1)== CellType.PLAIN.getCellTypeNumber()) {
-			lnmgameLayout.setGameStartPosition(nextPosition);
-			CommonPlace cell = new CommonPlace(gameMonsters,gameHeroes);
-			cell.moveToCell(scanner,lnmgameLayout);
+		//check for common place. Hero gains the special abilities in each cell inside the each cell class
+		else {
+			hero.setCharacterPosition(nextPosition);
+			//hero.attackInRange(gameMonsters, lnmgameLayout, scanner);
 		}
 	}
 	
