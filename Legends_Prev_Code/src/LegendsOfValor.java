@@ -58,8 +58,9 @@ public class LegendsOfValor extends RolePlayGame{
 				MonsterNexus monsterNexus = new MonsterNexus(allMonsters,gameHeroes);
 				List<Monster> newMonsters = new ArrayList<Monster>();
 				newMonsters = monsterNexus.createMonsters(GameConfig);
-				for(Monster monster:newMonsters) {
-					gameMonsters.add(monster);
+				for(int i=0;i<newMonsters.size();i++) {
+					if(!gameHeroes.get(i).isHeroWonGame())//check if Hero in that lane already won to atop monster spawn
+						gameMonsters.add(newMonsters.get(i));
 				}
 			}
 			for(int i=0;i<gameHeroes.size();i++) {
