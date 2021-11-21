@@ -99,7 +99,12 @@ public class LegendsOfValor extends RolePlayGame{
 				isValidLane = true;
 		}
 		else if(GameConstants.LNM_TELEPORT_KEY.equalsIgnoreCase(nextPosition)) {
-			hero.teleport(lnmgameLayout, scanner, allMonsters, gameHeroes);
+			nextPostn = hero.teleport(lnmgameLayout, scanner, allMonsters, gameHeroes);
+			if(nextPostn == hero.getCharacterPosition()) {
+				return -10;
+			} else {
+				isValidLane = true;
+			}
 		}
 		else if(GameConstants.LNM_MARKET_KEY.equalsIgnoreCase(nextPosition)) {
 			nextPostn = -20;

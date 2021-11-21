@@ -212,10 +212,11 @@ public class Hero extends GameCharacter{
 		}	
 	}
 	
-	public void back(LNMGameLayout map){
+	public int back(LNMGameLayout map){
 		int size = map.getGameSize();
 		int start_nexus = size * (size - 1) + 1;
-		heroLocation = (heroLocation - 1) % size + start_nexus;
+		int hero_loc = getCharacterPosition();
+		return ((hero_loc - 1) % size + start_nexus);
 	}
 
 	public int teleport(LNMGameLayout map, Scanner scanner, List<Monster> mst, List<Hero> hero) {
@@ -227,10 +228,11 @@ public class Hero extends GameCharacter{
 		Pattern quit_pattern = Pattern.compile("^\\s*(q)\\s*");
 		int farthest_hero = map.getGameSize() * map.getGameSize();
 		for(Hero h : hero) {
-			farthest_hero = Math.min(farthest_hero, h.getHeroLocation());
+			farthest_hero = Math.min(farthest_hero, h.getCharacterPosition());
 		}
 		while(true) {
-			System.out.println("Please enter the number inside a cell to select a destination of teleporting ");
+			System.out.println("Please enter the number inside a cell to select a destination of teleport:");
+			System.out.println("(Or press q to cancel this teleport)");
 			boolean inp_valid = false;
 			String inp = "";
 			int inp_int = 0;
@@ -238,10 +240,12 @@ public class Hero extends GameCharacter{
 				inp = scanner.nextLine();
 				Matcher match_q = quit_pattern.matcher(inp);
 				Matcher match_int = int_pattern.matcher(inp);
-				if (!match_q.find() && !match_int.find()) {
+				boolean quit = match_q.find();
+				boolean if_tele = match_int.find();
+				if (!quit && !if_tele) {
 					System.out.println("Invalid input. Please enter again!");
-				} else if(match_q.find()){
-					return heroLocation;
+				} else if(quit){
+					return getCharacterPosition();
 				} else {
 					inp_int = Integer.parseInt(match_int.group(1));
 					inp_valid = true;
@@ -253,13 +257,13 @@ public class Hero extends GameCharacter{
 				int tele_des = inp_int;
 				int farthest_mst = 0;
 				int mod_des = (tele_des - 1) % map.getGameSize();
-				int mod_cur = (heroLocation - 1) % map.getGameSize();
+				int mod_cur = (this.getCharacterPosition() - 1) % map.getGameSize();
 				for(Monster m : mst) {
 					if(Math.abs(((m.getCharacterPosition() - 1) % map.getGameSize()) - mod_des) < 2) {
 						farthest_mst = Math.max(farthest_mst, m.getCharacterPosition());
 					}
 				}
-				if(map.getGameCells().get(tele_des - 1) != CellType.INACCESSIBLECELL.getCellTypeNumber()) {
+				if(map.getGameCells().get(tele_des - 1) == CellType.INACCESSIBLECELL.getCellTypeNumber()) {
 					System.out.println("Cannot teleport to an inaccessible cell.");
 				} else if(Math.abs(mod_des - mod_cur) < 2) {
 					System.out.println("Cannot teleport to a cell in the same lane.");
@@ -270,7 +274,7 @@ public class Hero extends GameCharacter{
 				} else if((tele_des / map.getGameSize()) < (farthest_mst / map.getGameSize())) {
 					System.out.println("Cannot teleport to a cell behind monsters in that lane.");
 				} else {
-					heroLocation = tele_des;
+					/*this.setCharacterPosition(tele_des);*/
 					return tele_des;
 				}
 			}
@@ -285,8 +289,8 @@ public class Hero extends GameCharacter{
 		for(Monster m : mst) {
 			int mst_row = (m.getCharacterPosition() - 1) / map.getGameSize();
 			int mst_col = (m.getCharacterPosition() - 1) % map.getGameSize();
-			int hero_row = (heroLocation - 1) / map.getGameSize();
-			int hero_col = (heroLocation - 1) % map.getGameSize();
+			int hero_row = (getCharacterPosition() - 1) / map.getGameSize();
+			int hero_col = (getCharacterPosition() - 1) % map.getGameSize();
 			if(Math.abs(mst_row - hero_row) < 2 && Math.abs(mst_col - hero_col) < 2) {
 				target.put(m.getCharacterPosition(), m);
 			}
@@ -315,9 +319,11 @@ public class Hero extends GameCharacter{
 				inp = scanner.nextLine();
 				Matcher match_q = quit_pattern.matcher(inp);
 				Matcher match_int = int_pattern.matcher(inp);
-				if (!match_q.find() && !match_int.find()) {
+				boolean quit = match_q.find();
+				boolean if_attack = match_int.find();
+				if (!quit && !if_attack) {
 					System.out.println("Invalid input. Please enter again!");
-				} else if (match_q.find()) {
+				} else if (quit) {
 					return;
 				} else {
 					inp_int = Integer.parseInt(match_int.group(1));
