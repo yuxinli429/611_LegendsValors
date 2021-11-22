@@ -137,12 +137,12 @@ Notes:
 1. Files to be parsed should be stored in ConfigFiles, for parser class to read class along with the .wav file for music to be played
 
 2. Bonus Implementations:
-	a. Parser created to parse files and load. No changes have been done to the files. Code taken care to remove empty lines and extra spaces as well(FileToList.java)
-	b. ASCII art implemented at the beginning to display the welcome message and for the game map and cell structures
-	c. Music will be played as soon as the game is run until completion or quit.
-	d. Colorful UI is implemented on the game's map to display different cell in different colors.
-	e. Builder Design pattern implemented to create objects of potion, spell, armor and weapon from market to create market inventory to potions(uses parser to read from file and map all the potions to potion class created from within), spells, armors and weapons class which in turn create the objects. Also, created heroInventory from hero class to keep it immutable and consistent and maintain 1-1 relation
-	f. ASCII Animation added after the welcome design.
+    a. Parser created to parse files and load. No changes have been done to the files. Code taken care to remove empty lines and extra spaces as well(FileToList.java)
+    b. ASCII art implemented at the beginning to display the welcome message and for the game map and cell structures
+    c. Music will be played as soon as the game is run until completion or quit.
+    d. Colorful UI is implemented on the game's map to display different cell in different colors.
+    e. Builder Design pattern implemented to create objects of potion, spell, armor and weapon from market to create market inventory to potions(uses parser to read from file and map all the potions to potion class created from within), spells, armors and weapons class which in turn create the objects. Also, created heroInventory from hero class to keep it immutable and consistent and maintain 1-1 relation
+    f. ASCII Animation added after the welcome design.
 
 3. The code can be run in terminal but not on eclipse or IntelliJ workspace since the path is not consistent for the both. Followed the convention mentioned on piazza but modified the path to System.getProperty("user.dir") + "/ConfigFiles/" since adding src to the path will cause issues on terminal.
 

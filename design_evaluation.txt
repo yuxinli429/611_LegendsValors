@@ -1,0 +1,11 @@
+1. For the three new actions for hero in Legends2:teleport, back and attack, we create three corresponding
+methods in the Hero class. The LegendsOfValor class controls the main process of the entire Game. Compared
+with creating those three methods in the LegendsOfValor, we make them as methods of the Hero class, so we
+can reuse them in other Legends-like games. Plus, instead of letting the LegendsOfValor handle all the user
+input in this game, we move part of them into those three methods in the Hero, so it will decrease the
+complexity of the LegendsOfValor. In addition, at first, we changed the position of a hero inside the tele-
+port and back methods but soon found that these two behaviors may vary depend on different types of cells.
+If we simply pass the configuration of this game into these two methods as arguments, then the implementation
+of them depends on the rule of this game, which may deteriorate the scalability of our code. As a result, we
+set the position of hero only in the LegendsOfValor class.
+

@@ -366,6 +366,7 @@ public class Hero extends GameCharacter{
 		}
 		msg += ")";
 		while(true) {//need to change since it is going in loop
+			System.out.println("Hero: " + getCharacterSymbol());
 			System.out.println(msg);
 			if(!has_mst_nearby) {
 				System.out.println("(Or press q to cancel this attack)");
