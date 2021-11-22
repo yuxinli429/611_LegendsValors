@@ -25,7 +25,7 @@ Files
 
 6. GameLayout.java - abstract class contains the basic functions to define any game's layout and to reset layout.
 
-7. LNMGameLayout - child class to GameLayout.java and implements the specific design and displays the structure of LNM map and other necessary displays like controls etc.,
+7. LNMGameLayout - child class to GameLayout.java and serves as a map to implement the specific design of Lengends game and displays other necessary displays like controls etc.,
 
 8. Cell.java - abstract super class to other cells of the game. Has list of cell types from cellType class and abstract functions to be performed in the cells.
 

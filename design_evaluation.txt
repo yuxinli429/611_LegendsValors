@@ -1,11 +1,32 @@
-1. For the three new actions for hero in Legends2:teleport, back and attack, we create three corresponding
-methods in the Hero class. The LegendsOfValor class controls the main process of the entire Game. Compared
-with creating those three methods in the LegendsOfValor, we make them as methods of the Hero class, so we
-can reuse them in other Legends-like games. Plus, instead of letting the LegendsOfValor handle all the user
-input in this game, we move part of them into those three methods in the Hero, so it will decrease the
-complexity of the LegendsOfValor. In addition, at first, we changed the position of a hero inside the tele-
-port and back methods but soon found that these two behaviors may vary depend on different types of cells.
-If we simply pass the configuration of this game into these two methods as arguments, then the implementation
-of them depends on the rule of this game, which may deteriorate the scalability of our code. As a result, we
-set the position of hero only in the LegendsOfValor class.
+**Design Analysis**
+Initial analysis for the game was to build it using as much possible as independent entities to reduce dependencies and increase re-usability with minimal changes. Yet still wanted it to connected and the class structure to be meaningful and easy to understand like Legends game extends RolePlayinggame which extends Game or Hero and Monster nexus extends nexus but Hero Nexus has a relationship with Market Inventory which is super class for potions, spell, armors etc., The most important aspect for the design was to create in such a way it would be user intuitive and the code can be understood by everyone
+
+**Design Structure**
+1. We took the code base from Legends :Monsters and Heroes and reused all of the classes with very minor modifications. Initial thought process was to create separate classes for each entity/object that had attributes of itself like Hero, Monster, potions etc., But at the same time creation of all the list of objects from reading the config files and creating each class object was achieved by re-using the file parser and creating mapper functions wherever applicable. For example, created a single mapper function in spell class for different child class objects of spells. We wanted the relation between the objects to be very clear. Based on whether it's an action that can be performed by the class object or an ability it gives, class methods and interfaces have been defined. F.E. a hero can fight or sell etc his inventory which are class method. But what all he can sell are the inventory items which implement sellable interface. Similar logic is employed to create rest of the interfaces.
+
+2. The next big entity was to maintain the entire game layout which in this case inherits the main GameLayout which can used to build each individual game Layout(map). For this, we maintain the cell design in each individual cell and reused it to build our map. This would give us flexibility to be able modify just a single cell design and not even touch the whole map. Also re-usability would be great in this case.
+
+3. All the different types of entities have been maintain as enum like CellTypes, SpellTypes to maintain consistency and keep all the possible values consistent. Every enum has an attribute value or string depending on the requirement and the design. F.E., CellTypes had a value assigned to each cell type which was used since shuffling(to have different cells with probabilities varying) the numbers would be very easy to achieve and maintain as a list. Also, it would be very easy to add a new set of numbers when new CellTypes are available which is the case in Legends of Valor
+
+4. Another big chunk of the code was maintaining the hero inventory much like the market inventory. Every hero had a hero inventory which created at the creation of hero object using design pattern and set the list of potion, armor etc.,; to maintain his own inventory.
+
+5. Apart from the class entities, few helper functions have been used which have been helpful from the start maintained in GameFunctions. Similarly, GameConstants was used to maintain all the final variable which can used throughout the game. Game config class was used to get and use these attributes throughout. Every game has this gameconfig class which will store the properties like size of the map, team size etc.,
+
+Below are some of bigger chunks of code apart from minor game validations and rules added for the sole purpose of Legends of Valor:
+	a. We have added the position for GameCharacter class to give hero and monsters positions. This will allow us to efficiently checking if hero is qualified to start a fight with monster and avoid situation like 2 heroes in the same spot. We thought to maintain x, y position attributes for each character to easily maintain the explored area for both character. However, it turns out these 2 attributes will be hard to maintain during the game running and not so user friendly when asked for inputs. Instead we decided to go with a single value position that is actually enough to check on different conditions and also make users life easy.
+
+	b. For the three new actions for hero in Legends2:teleport, back and attack, we create three corresponding methods in the Hero class. The LegendsOfValor class controls the main process of the entire Game. Compared with creating those three methods in the LegendsOfValor, we make them as methods of the Hero class, so we can reuse them in other Legends-like games. Plus, instead of letting the LegendsOfValor handle all the user input in this game, we move part of them into those three methods in the Hero, so it will decrease the complexity of the LegendsOfValor. In addition, at first, we changed the position of a hero inside the tele-port and back methods but soon found that these two behaviors may vary depend on different types of cells. If we simply pass the configuration of this game into these two methods as arguments, then the implementation of them depends on the rule of this game, which may deteriorate the scalability of our code. As a result, we set the position of hero in the LegendsOfValor class.
+
+	c. For Monster class in Legends 2 we added a moving algorithm for monsters to move on its own. We also check the condition after every move a monster made for validity of the move
+
+	d. We have also added numbers and color (mainly numbers) to each cell on the map when displaying the game to be more user-friendly. This game can get complicated and chaotic so with numbers user can easily decide which cell he/she wants to go without counting the cells
+	
+	e. Changes have also been made to LegendsOfValor class to include new functionality such as Hero and Monster spawn in their respective nexus and move in their respective lanes by changes to the mentioned entity classes to make sense of the game flow. 
+	
+	f. Each individual cell offered variety of different functionalities. Like apart from nexus and inaccessible cell, rest of the cells were pretty similar allowing monster and hero to move around and fight. So all these cells were categorizes as child cells to commonplace cells but the offered some had extra ability to offer. This was achieved by interface where in the cells that implemented it offered Hero special abilities.
+
+**Design Conclusion**
+With the usage of Java's inheritance, polymorphism etc feature we were able to achieve a object oriented code which is re-usable, flexible and ordered.
+
+
 
