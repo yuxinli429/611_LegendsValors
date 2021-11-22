@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+//Created to call parser to load the config file, read from the output 2d list of the selected heroes and map the heroes to the Hero class and maintain the list
 public class Heroes {
 	
 	private List<Hero> selectedHeroes;
@@ -13,6 +14,7 @@ public class Heroes {
 		
 	}
 	
+	//function to read inputs from file and display for selection
 	public void readInputs(Scanner scanner,FileToList readFile,GameConfig gameConfig) {
 		selectedHeroes = new ArrayList<Hero>();
 		ArrayList<ArrayList<String>> heroesList = new ArrayList<ArrayList<String>>();

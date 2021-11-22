@@ -3,7 +3,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
-//child class of cell class and has the logic to create monster or not depending on random chance
+//child class of cell class and is super class to the other cells like bush, cave
 public class CommonPlace extends Cell{
 	
 	List<Monster> monsterList;

@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 
-//class used to maintan hero's inventory
+//class used to maintan hero's inventory and display the corresponding list
 public class HeroInventory {
 	
 	private List<Potion> potionsList;
@@ -64,6 +64,7 @@ public class HeroInventory {
 		GameDesigns.tableWithLines(details, true);		
 	}
 	
+	//function to display armor details
 	public void displayArmorsDetails(){
 		ArrayList<ArrayList<String>> details = new ArrayList<ArrayList<String>>();
 		ArrayList<String> header = new ArrayList<String>();
@@ -78,6 +79,7 @@ public class HeroInventory {
 		GameDesigns.tableWithLines(details, true);		
 	}
 	
+	//funtion to display potion list
 	public void displayPotionsDetails(){
 		ArrayList<ArrayList<String>> details = new ArrayList<ArrayList<String>>();
 		ArrayList<String> header = new ArrayList<String>();
@@ -94,6 +96,7 @@ public class HeroInventory {
 		GameDesigns.tableWithLines(details, true);		
 	}
 	
+	//function to display weapons list
 	public void displayWeaponsDetails(){
 		ArrayList<ArrayList<String>> details = new ArrayList<ArrayList<String>>();
 		ArrayList<String> header = new ArrayList<String>();

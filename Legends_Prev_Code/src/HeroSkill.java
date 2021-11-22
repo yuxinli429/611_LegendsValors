@@ -1,3 +1,4 @@
+//Enum to save the list of all Hero's special skills like Dexterity, Agility and Strength
 
 public enum HeroSkill {
 	

@@ -3,6 +3,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
+//child class to Nexus class. Origin of Monsters on each lane and creates monsters based on the hero level in each of the lane
 public class MonsterNexus extends NexusCell{
 
 	
@@ -21,7 +22,7 @@ public class MonsterNexus extends NexusCell{
 		this.monsterList = monsterList;	
 		this.heroList = heroList;
 	}
-	
+	//Function to create the monsters based on the hero level in each lane
 	public List<Monster> createMonsters(GameConfig gameconfig) {
 		List<Monster> cellMonsters = new ArrayList<Monster>();
 		List<Integer> monsterNexusList = gameconfig.getMonsterNexusList();
@@ -45,6 +46,7 @@ public class MonsterNexus extends NexusCell{
 				newMonster = monsterList.get(propableMonsters.get(randomMonster));
 			}while(cellMonsters.contains(newMonster));
 			cellMonsters.add(newMonster);
+			newMonster.setHealthPower(100);
 			newMonster.setCharacterPosition(monsterNexusList.get(y)+1);
 			newMonster.setCharacterSymbol("M"+String.valueOf(i+1));
 			y=y+3;

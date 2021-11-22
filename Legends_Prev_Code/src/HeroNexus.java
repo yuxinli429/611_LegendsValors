@@ -2,7 +2,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
-//HeroNexus class has inventory
+//child class to Nexus class. Has inventory and also acts as hero's origination for each lane. Has logic to display and sell the inventory
 public class HeroNexus extends NexusCell{
 	
 	private List<Potion> potions;
@@ -84,6 +84,7 @@ public class HeroNexus extends NexusCell{
 		this.armors = armors;
 	}
 	
+	//function used to sell hero inventory
 	public void sellInventory(Hero hero, Scanner scanner) {		
 		boolean isDone = false;
 		while(!isDone) {
@@ -103,6 +104,7 @@ public class HeroNexus extends NexusCell{
 
 	}
 	
+	//function used to sell hero potions
 	public void sellPotion(Scanner scanner,Hero hero) {
 		potionsclass.displayPotionsList();
 		boolean isDone = false;
@@ -121,6 +123,7 @@ public class HeroNexus extends NexusCell{
 		}
 	}
 	
+	//function used to sell hero armors
 	public void sellArmor(Scanner scanner,Hero hero) {
 		armorsClass.displayArmors();
 		boolean isDone = false;
@@ -139,6 +142,7 @@ public class HeroNexus extends NexusCell{
 		}
 	}
 	
+	//function used to sell hero spells
 	public void sellSpells(Scanner scanner,Hero hero) {
 		spellsClass.displaySpellsList();
 		boolean isDone = false;
@@ -157,6 +161,7 @@ public class HeroNexus extends NexusCell{
 		}
 	}
 	
+	//function used to sell hero weapons
 	public void sellWeapons(Scanner scanner,Hero hero) {
 		weaponsClass.displayWeapons();
 		boolean isDone = false;
@@ -175,6 +180,7 @@ public class HeroNexus extends NexusCell{
 		}
 	}
 	
+	//function to spawn hero from nexus
 	public void spawnHero(List<Hero> heroList, List<Integer> heroNexusList){
 		Random rn = new Random();
 		int randomLocation = rn.nextInt(2)+1;

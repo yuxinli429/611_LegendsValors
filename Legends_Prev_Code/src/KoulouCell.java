@@ -1,3 +1,4 @@
+//child class to CommonPlace class and where heroes and monsters can move and fight. Heroes get extra Strength
 
 public class KoulouCell extends CommonPlace implements isSpecial{
 

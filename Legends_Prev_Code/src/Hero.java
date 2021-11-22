@@ -225,6 +225,7 @@ public class Hero extends GameCharacter{
 		}	
 	}
 	
+	//functio used to move hero back to his nexus and check if another hero is already present there
 	public boolean back(LNMGameLayout map, List<Hero> hero){
 		List<Integer> hero_pos = new ArrayList<>();
 		for(Hero h : hero) {
@@ -366,7 +367,6 @@ public class Hero extends GameCharacter{
 		}
 		msg += ")";
 		while(true) {//need to change since it is going in loop
-			System.out.println("Hero: " + getCharacterSymbol());
 			System.out.println(msg);
 			if(!has_mst_nearby) {
 				System.out.println("(Or press q to cancel this attack)");
@@ -700,9 +700,11 @@ public class Hero extends GameCharacter{
 	public void heroWonGame(LNMGameLayout lnmgameLayout) {
 		List<Integer> monsterNexus= new ArrayList<Integer>();
 		monsterNexus = lnmgameLayout.monsterNexusLoc();
-		if(monsterNexus.contains(this.getCharacterPosition())) {
+		if(monsterNexus.contains(this.getCharacterPosition()-1)) {
 			System.out.println(this.getCharacterSymbol()+", "+this.getName()+" reached monster nexus and won!!");
 			this.setHeroWonGame(true);
+			System.out.println("Thankyou for playing!!");
+			System.exit(0);
 		}
 	}
 

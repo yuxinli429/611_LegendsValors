@@ -83,7 +83,7 @@ public class LegendsOfValor extends RolePlayGame{
 	private void makeMonstersMove(Scanner scanner, LNMGameLayout lnmgameLayout) {
 		for(int i=0;i<gameHeroes.size();i++) {
 			for(int j=i;j<gameMonsters.size();j=j+3) {
-				if(gameMonsters.get(j).getCharacterPosition()>0 && gameMonsters.get(j).getCharacterPosition()<this.GameConfig.getGameSize()*this.GameConfig.getGameSize()) {
+				if(gameMonsters.get(j).getCharacterPosition()>0 && gameMonsters.get(j).getCharacterPosition()<this.GameConfig.getGameSize()*this.GameConfig.getGameSize() && gameMonsters.get(j).isHasWon() == false) {
 					System.out.println(gameMonsters.get(j).getCharacterSymbol()+", "+gameMonsters.get(j).getName()+" made a move");
 					gameMonsters.get(j).MoveMonster(lnmgameLayout);
 					lnmgameLayout.drawLNMLayout(false,true,gameHeroes,gameMonsters);

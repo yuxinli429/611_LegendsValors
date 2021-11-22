@@ -17,7 +17,7 @@ public class Monster extends GameCharacter{
 		this.damage = 0;
 		this.defence = 0;
 		this.dodgeChance = 0;
-		this.hasWon = false;
+		this.setHasWon(false);
 	}
 	
 	
@@ -80,6 +80,7 @@ public class Monster extends GameCharacter{
 			next = MakeMove(lnmgameLayout);
 		}
 	}
+	//Function to allow monster to move in this turn
 	public int MakeMove(LNMGameLayout lnmgameLayout){
 		int current = this.getCharacterPosition();
 		int next = current;
@@ -92,6 +93,7 @@ public class Monster extends GameCharacter{
 		
 	}
 	
+	//function to validate the move made
 	public boolean CheckMonsterMove(int position, LNMGameLayout lnmgameLayout) {
 		List<Integer> gameCells = lnmgameLayout.getGameCells();
 		if (gameCells.get(position - 1) == CellType.INACCESSIBLECELL.getCellTypeNumber()) {
@@ -99,15 +101,28 @@ public class Monster extends GameCharacter{
 			return false;
 		}
 		else if(gameCells.get(position - 1) == CellType.HERONEXUS.getCellTypeNumber()){
-			this.hasWon = true;
+			this.setHasWon(true);
 			this.setCharacterPosition(position);
 			System.out.println(this.getCharacterSymbol()+", "+this.getName()+" reached Hero Nexus and won!!");
+			System.out.println("Heroes lost");
+			System.out.println("Thankyou for playing!!");
+			System.exit(0);
 			return true;
 		}
 		else{
 			this.setCharacterPosition(position);
 			return true;
 		}
+	}
+
+
+	public boolean isHasWon() {
+		return hasWon;
+	}
+
+
+	public void setHasWon(boolean hasWon) {
+		this.hasWon = hasWon;
 	}
 
 }

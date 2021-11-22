@@ -10,6 +10,8 @@ public class Monsters {
 	public List<Monster> getMonstersList() {
 		return monstersList;
 	}
+	
+	//Function to create monsters from the files and maintain the list of monsters to parse
 	public List<Monster> createMonsterList(FileToList readFile){
 		monstersList = new ArrayList<>();
 		ArrayList<ArrayList<String>> dragonsList = new ArrayList<ArrayList<String>>();
