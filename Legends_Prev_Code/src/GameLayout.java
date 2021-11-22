@@ -1,3 +1,5 @@
+import java.util.List;
+
 //super class used as a based to every game's basic structure
 
 public abstract class GameLayout {
@@ -19,7 +21,7 @@ public abstract class GameLayout {
 	/**
      * Draw the game layout
      */
-	public abstract void drawLayout();
+	public abstract void drawLayout(List<Hero> heroesList, List<Monster>  monsterList);
 	
 	/**
      * Reset the game layout

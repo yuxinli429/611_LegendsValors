@@ -68,7 +68,7 @@ public class LNMGameLayout extends GameLayout{
 	
 	
 	public void drawLNMLayout(boolean isMarket, boolean isInventory,List<Hero> heroesList, List<Monster>  monsterList) {
-		drawMap(heroesList,monsterList);
+		drawLayout(heroesList,monsterList);
 		//displayMapInfo();
 		System.out.println("Below are the controls you could use to navigate");
 		displayControlPanel(isMarket,isInventory);	
@@ -76,7 +76,8 @@ public class LNMGameLayout extends GameLayout{
 	
 	
 	//method to create the LNM game maze showing market, inaccessible and common place cells
-	public void drawMap(List<Hero> heroesList, List<Monster>  monsterList) {
+	@Override
+	public void drawLayout(List<Hero> heroesList, List<Monster>  monsterList) {
 		// TODO Auto-generated method stub
 		//Create cells using Cell class with number for ease of user
 		int cellNum1=0,cellNum2=0,cellNum3 =0;
@@ -181,30 +182,10 @@ public class LNMGameLayout extends GameLayout{
 		GameDesigns.tableWithLines(controls, false);	
 	}
 	
-	//display the map info to understand the cells
-	public void displayMapInfo() {
-		HeroNexus market = new HeroNexus();
-		market.cellDesign();
-		System.out.println(" - HeroNexus");
-		System.out.println();
-		InaccessibleCell cell = new InaccessibleCell();
-		cell.cellDesign();
-		System.out.println(" - Inaccessible Place");
-		System.out.println();
-		System.out.println(" - Common Place");
-		System.out.println();
-	}
-	
 		
 
 	@Override
 	public void resetLayout() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void drawLayout() {
 		// TODO Auto-generated method stub
 		
 	}
