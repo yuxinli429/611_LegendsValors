@@ -30,3 +30,14 @@ With the usage of Java's inheritance, polymorphism etc feature we were able to a
 
 
 
+2. We have added the position for GameCharacter class to give hero and monsters positions. This will allow us to 
+efficiently checking if hero is qualified to start a fight with monster and avoid situation like 2 heroes in the same 
+spot. We tried to maintain x, y position attributes for each character just to easily maintain the explored area for
+both character. However, it turns out these 2 attributes will be hard to maintain during the game and position is 
+actually enough to check on different conditions. 
+
+3. For Monster class in Legends 2 we added a moving algorithm for monsters to move on its own. We also check
+the condition after every move a monster made 
+
+4. We have also added numbers and color (mainly numbers) to each cell on the map when displaying the game to be more user-friendly. 
+This game can get complicated and chaotic so with numbers user can easily decide which cell he/she wants to go without counting the cells
